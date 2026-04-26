@@ -14,6 +14,22 @@ export async function getSymptomAssessment(symptoms: string, patientContext: any
   return response.json()
 }
 
+export async function getRiskAssessment(foodData: any, symptomData: any) {
+  const response = await fetch('/api/analyze', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ foodData, symptomData }),
+  })
+
+  if (!response.ok) {
+    const error = await response.json()
+    throw new Error(error.message || 'Failed to get risk assessment')
+  }
+
+  return response.json()
+}
+
+
 // Build the system prompt for the ASHA AI symptom checker
 export function buildSystemPrompt() {
   return `You are ASHA AI, a clinical decision support assistant designed for frontline community health workers (ASHA workers) in rural India. 

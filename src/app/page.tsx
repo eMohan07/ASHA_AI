@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import { Package, Mic, Sparkles } from 'lucide-react'
 
 export default function HomePage() {
   return (
@@ -74,26 +75,107 @@ export default function HomePage() {
         </div>
       </div>
 
-      {/* How it works */}
-      <div className="card">
-        <h2 className="font-semibold text-gray-900 mb-4">How it works</h2>
-        <div className="space-y-3">
-          {[
-            { step: '1', title: 'Add the patient', desc: 'Enter name, age, village and contact — works offline too' },
-            { step: '2', title: 'Describe symptoms', desc: 'Type symptoms in the AI chat — available in Tamil, Hindi, English' },
-            { step: '3', title: 'Get triage advice', desc: 'Claude AI assesses severity and recommends next steps' },
-            { step: '4', title: 'Alert the doctor', desc: 'If critical, one tap sends a WhatsApp alert to the nearest PHC' },
-          ].map((item) => (
-            <div key={item.step} className="flex items-start gap-3">
-              <div className="w-6 h-6 bg-green-700 text-white rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0 mt-0.5">
-                {item.step}
-              </div>
-              <div>
-                <div className="text-sm font-medium text-gray-900">{item.title}</div>
-                <div className="text-xs text-gray-500">{item.desc}</div>
-              </div>
+      {/* Core Prototypes Section */}
+      <div className="my-12 space-y-8">
+        <div className="text-center">
+          <h2 className="text-3xl font-bold text-slate-900 mb-2 tracking-tight">Core Frontline Tools</h2>
+          <p className="text-slate-500 max-w-2xl mx-auto">Essential functional prototypes for community health triage and guidance.</p>
+        </div>
+
+        <div className="grid md:grid-cols-3 gap-4">
+          <div className="border border-green-200 bg-green-50 rounded-xl overflow-hidden p-6 text-center flex flex-col justify-between h-full">
+            <div>
+              <h3 className="text-lg font-bold text-green-800 mb-2">AI Health Monitor</h3>
+              <p className="text-green-700 text-xs mb-4 leading-relaxed">Multi-step disease risk assessment with clinical reports.</p>
             </div>
-          ))}
+            <Link href="/health-monitor" className="bg-green-600 hover:bg-green-700 text-white font-bold py-2 rounded-lg text-sm transition-colors">
+              Start Assessment
+            </Link>
+          </div>
+
+          <div className="border border-teal-200 bg-teal-50 rounded-xl overflow-hidden p-6 text-center flex flex-col justify-between h-full">
+            <div>
+              <h3 className="text-lg font-bold text-teal-800 mb-2">Respiratory AI</h3>
+              <p className="text-teal-700 text-xs mb-4 leading-relaxed">Acoustic cough analysis to generate Lung Health Index.</p>
+            </div>
+            <Link href="/respiratory-assessment" className="bg-teal-600 hover:bg-teal-700 text-white font-bold py-2 rounded-lg text-sm transition-colors">
+              Test Cough AI
+            </Link>
+          </div>
+
+          <div className="border border-indigo-200 bg-indigo-50 rounded-xl overflow-hidden p-6 text-center flex flex-col justify-between h-full">
+            <div>
+              <h3 className="text-lg font-bold text-indigo-800 mb-2">Education Co-pilot</h3>
+              <p className="text-indigo-700 text-xs mb-4 leading-relaxed">Multilingual guidance with interactive triage questions.</p>
+            </div>
+            <Link href="/health-education" className="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 rounded-lg text-sm transition-colors">
+              Open Hub
+            </Link>
+          </div>
+        </div>
+      </div>
+
+      {/* AI Impact Features Section */}
+      <div className="my-16 space-y-8">
+        <div className="text-center">
+          <h2 className="text-3xl font-bold text-slate-900 mb-2 tracking-tight">From Features to Impact</h2>
+          <p className="text-slate-500 max-w-2xl mx-auto">Strategic prototypes targeting failure points in last-mile delivery.</p>
+        </div>
+
+        <div className="grid md:grid-cols-3 gap-6">
+          <div className="group relative bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-all hover:border-blue-300 flex flex-col">
+            <div className="h-40 bg-slate-900 flex items-center justify-center p-6 text-blue-400 group-hover:scale-105 transition-transform">
+               <div className="text-center">
+                 <Package size={48} className="mx-auto mb-2 opacity-50" />
+                 <span className="text-xs font-bold uppercase tracking-widest text-blue-300">Inventory AI</span>
+               </div>
+            </div>
+            <div className="p-6 flex flex-col flex-1">
+              <h3 className="text-xl font-bold text-slate-900 mb-2 group-hover:text-blue-600 transition-colors">Supply Chain AI</h3>
+              <p className="text-sm text-slate-500 mb-6 flex-1 leading-relaxed">Predicts stock-outs before they happen to restore trust at scale.</p>
+              <Link href="/supply-chain" className="w-full bg-slate-900 text-white font-bold py-2.5 rounded-lg text-center text-sm hover:bg-blue-600 transition-colors">
+                Open Dashboard
+              </Link>
+            </div>
+          </div>
+
+          <div className="group relative bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-all hover:border-purple-300 flex flex-col">
+            <div className="h-40 bg-purple-900 flex items-center justify-center p-6 text-purple-300 group-hover:scale-105 transition-transform">
+               <div className="text-center">
+                 <Mic size={48} className="mx-auto mb-2 opacity-50" />
+                 <span className="text-xs font-bold uppercase tracking-widest text-purple-200">Ambient AI</span>
+               </div>
+            </div>
+            <div className="p-6 flex flex-col flex-1">
+              <h3 className="text-xl font-bold text-slate-900 mb-2 group-hover:text-purple-600 transition-colors">Ambient Scribing</h3>
+              <p className="text-sm text-slate-500 mb-6 flex-1 leading-relaxed">Cuts documentation burden so workers focus on care.</p>
+              <Link href="/ambient-scribing" className="w-full bg-purple-900 text-white font-bold py-2.5 rounded-lg text-center text-sm hover:bg-purple-700 transition-colors">
+                Open Scribing Tool
+              </Link>
+            </div>
+          </div>
+
+          <div className="group relative bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-all hover:border-pink-300 flex flex-col">
+            <div className="h-40 bg-pink-900 flex items-center justify-center p-6 text-pink-300 group-hover:scale-105 transition-transform">
+               <div className="text-center">
+                 <Sparkles size={48} className="mx-auto mb-2 opacity-50" />
+                 <span className="text-xs font-bold uppercase tracking-widest text-pink-200">Trajectory AI</span>
+               </div>
+            </div>
+            <div className="p-6 flex flex-col flex-1">
+              <h3 className="text-xl font-bold text-slate-900 mb-2 group-hover:text-pink-600 transition-colors">Digital Twin</h3>
+              <p className="text-sm text-slate-500 mb-6 flex-1 leading-relaxed">Personalized health trajectories for nutrition advice.</p>
+              <Link href="/digital-twin" className="w-full bg-pink-900 text-white font-bold py-2.5 rounded-lg text-center text-sm hover:bg-pink-700 transition-colors">
+                Generate Twin
+              </Link>
+            </div>
+          </div>
+        </div>
+
+        <div className="bg-slate-50 border border-slate-200 rounded-2xl p-8 text-center">
+          <p className="text-slate-600 italic">
+            "These six features form an integrated AI layer that makes every touchpoint in the care journey smarter, faster, and more human."
+          </p>
         </div>
       </div>
 
