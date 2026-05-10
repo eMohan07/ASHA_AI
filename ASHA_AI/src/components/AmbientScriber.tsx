@@ -1,6 +1,10 @@
 "use client"
 import React, { useState } from 'react';
+<<<<<<< HEAD
 import { Mic, FileText, Loader2, Sparkles, User, Activity, ClipboardList } from 'lucide-react';
+=======
+import { Mic, FileText, Loader2, Sparkles, User, Activity, ClipboardList, AlertTriangle } from 'lucide-react';
+>>>>>>> a096889 (Updated ASHA AI frontend and dashboard)
 
 export default function AmbientScriber() {
   const [transcript, setTranscript] = useState('');

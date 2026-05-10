@@ -81,6 +81,7 @@ export default function DigitalTwinGenerator() {
 
           {twinData && !loading && (
             <div className="flex-1 space-y-6 animate-in fade-in slide-in-from-right-4 duration-500">
+<<<<<<< HEAD
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {/* Current State */}
                 <div className="bg-white p-5 rounded-xl border border-red-100 shadow-sm">
@@ -129,6 +130,66 @@ export default function DigitalTwinGenerator() {
                   ))}
                 </div>
               </div>
+=======
+              {twinData.message ? (
+                <div className="flex-1 bg-red-50 rounded-xl border border-red-200 flex flex-col items-center justify-center text-red-600 p-12 text-center">
+                  <Info size={48} className="mb-4 opacity-50" />
+                  <p className="font-bold text-lg mb-2">Analysis Failed</p>
+                  <p className="text-sm opacity-80">{twinData.message}</p>
+                </div>
+              ) : (
+                <>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    {/* Current State */}
+                    <div className="bg-white p-5 rounded-xl border border-red-100 shadow-sm">
+                      <div className="flex items-center gap-2 text-red-600 font-bold mb-3 uppercase tracking-wider text-xs">
+                        <TrendingDown size={14} /> Current Trajectory
+                      </div>
+                      <h4 className="font-bold text-slate-800 text-lg mb-2">{twinData.current?.status || "Unknown"}</h4>
+                      <p className="text-sm text-slate-600 mb-4">{twinData.current?.trajectory || "Data unavailable"}</p>
+                      <ul className="space-y-1.5">
+                        {twinData.current?.risks?.map((risk: string, i: number) => (
+                          <li key={i} className="text-xs text-red-500 flex items-center gap-2">
+                            <span className="w-1.5 h-1.5 bg-red-500 rounded-full" /> {risk}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+
+                    {/* Optimized State */}
+                    <div className="bg-white p-5 rounded-xl border border-green-100 shadow-sm">
+                      <div className="flex items-center gap-2 text-green-600 font-bold mb-3 uppercase tracking-wider text-xs">
+                        <TrendingUp size={14} /> Optimized Trajectory
+                      </div>
+                      <h4 className="font-bold text-slate-800 text-lg mb-2">{twinData.optimized?.status || "Unknown"}</h4>
+                      <p className="text-sm text-slate-600 mb-4">{twinData.optimized?.trajectory || "Data unavailable"}</p>
+                      <ul className="space-y-1.5">
+                        {twinData.optimized?.benefits?.map((benefit: string, i: number) => (
+                          <li key={i} className="text-xs text-green-600 flex items-center gap-2">
+                            <CheckCircle2 size={12} /> {benefit}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  </div>
+
+                  {/* Advice */}
+                  <div className="bg-pink-50 p-6 rounded-xl border border-pink-100 shadow-sm">
+                    <h4 className="font-bold text-pink-800 mb-4 flex items-center gap-2">
+                      <Sparkles size={18} /> Personalized Advice for Impact
+                    </h4>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      {twinData.advice?.map((adv: string, i: number) => (
+                        <div key={i} className="bg-white p-3 rounded-lg border border-pink-200 text-sm text-slate-700 flex items-center gap-3">
+                          <div className="bg-pink-100 text-pink-600 w-6 h-6 flex items-center justify-center rounded-full text-xs font-bold shrink-0">{i+1}</div>
+                          {adv}
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </>
+              )}
+>>>>>>> a096889 (Updated ASHA AI frontend and dashboard)
             </div>
           )}
         </div>

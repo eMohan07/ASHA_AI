@@ -1,5 +1,9 @@
 'use client'
+<<<<<<< HEAD
 import { useState, useRef, useEffect } from 'react'
+=======
+import { useState, useRef, useEffect, Suspense } from 'react'
+>>>>>>> a096889 (Updated ASHA AI frontend and dashboard)
 import { useSearchParams } from 'next/navigation'
 import ChatMessage from '../../components/ChatMessage'
 import AlertBanner from '../../components/AlertBanner'
@@ -13,6 +17,17 @@ const WELCOME_MESSAGE = {
 }
 
 export default function SymptomCheckerPage() {
+<<<<<<< HEAD
+=======
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <SymptomCheckerContent />
+    </Suspense>
+  )
+}
+
+function SymptomCheckerContent() {
+>>>>>>> a096889 (Updated ASHA AI frontend and dashboard)
   const searchParams = useSearchParams()
   const patientId   = searchParams.get('patientId')
   const patientName = searchParams.get('patientName')

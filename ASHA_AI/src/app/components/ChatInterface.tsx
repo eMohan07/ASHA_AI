@@ -1,6 +1,13 @@
+<<<<<<< HEAD
 "use client"
 
 import { useChat } from "ai/react"
+=======
+// @ts-nocheck
+"use client"
+
+import { useChat } from "@ai-sdk/react"
+>>>>>>> a096889 (Updated ASHA AI frontend and dashboard)
 
 export function ChatInterface() {
   const { messages, input, handleInputChange, handleSubmit, isLoading } = useChat()
