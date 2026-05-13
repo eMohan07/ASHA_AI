@@ -86,9 +86,28 @@ export default function RespiratoryAnalyzer() {
 
   const runAnalysis = async () => {
     setIsAnalyzing(true)
-    await new Promise(r => setTimeout(r, 2000))
-    setResult(true)
-    setIsAnalyzing(false)
+    try {
+      const response = await fetch('/api/analyze-cough', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          coughType: 'Acoustic waveform analysis from microphone',
+          duration: recordingTime + ' seconds'
+        }),
+      });
+      const data = await response.json();
+      setResult(data);
+    } catch (e) {
+      console.error(e);
+      setResult({
+        index: 'Error',
+        score: 0,
+        analysis: 'Failed to analyze recording.',
+        recommendation: 'Please try again.'
+      });
+    } finally {
+      setIsAnalyzing(false)
+    }
   }
 
   const fmt = (s: number) => `00:${String(Math.min(s, 30)).padStart(2, '0')}`
@@ -241,11 +260,11 @@ export default function RespiratoryAnalyzer() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
             <div className="bg-slate-50 rounded-xl p-5 border border-slate-100">
               <div className="flex justify-between items-start mb-2">
-                <p className="text-xs font-bold text-slate-500 uppercase">Breath Rate</p>
-                <TrendingUp size={16} className="text-[#9e3b33]" />
+                <p className="text-xs font-bold text-slate-500 uppercase">Lung Health Index</p>
+                <Activity size={16} className="text-[#9e3b33]" />
               </div>
-              <p className="text-3xl font-bold text-slate-900 mb-1">22 <span className="text-sm font-semibold text-slate-500">BPM</span></p>
-              <p className="text-xs font-semibold text-[#9e3b33]">+4 Above Baseline</p>
+              <p className="text-3xl font-bold text-slate-900 mb-1">{result.score} <span className="text-sm font-semibold text-slate-500">/ 100</span></p>
+              <p className="text-xs font-semibold text-[#9e3b33]">AI Computed Score</p>
             </div>
             
             <div className="bg-slate-50 rounded-xl p-5 border border-slate-100">
@@ -262,7 +281,7 @@ export default function RespiratoryAnalyzer() {
                 <p className="text-xs font-bold text-slate-500 uppercase">AI Classification</p>
                 <AlertTriangle size={16} className="text-amber-500" />
               </div>
-              <p className="text-lg font-bold text-slate-900 mb-1 leading-tight">COPD EXACERBATION</p>
+              <p className="text-lg font-bold text-slate-900 mb-1 leading-tight">{result.index.toUpperCase()}</p>
               <p className="text-xs font-semibold text-amber-600">Pattern Match Found</p>
               
               <button className="absolute -right-4 top-1/2 -translate-y-1/2 w-12 h-12 bg-[#9e3b33] text-white rounded-full flex items-center justify-center shadow-lg hover:scale-105 transition-transform">
@@ -273,52 +292,18 @@ export default function RespiratoryAnalyzer() {
 
           <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6 flex flex-col lg:flex-row gap-8">
             <div className="flex-1 space-y-6">
-              <p className="text-xs font-bold text-slate-500 uppercase tracking-wide">Acoustic Biomarkers</p>
-              
-              <div className="space-y-1">
-                <div className="flex justify-between text-sm font-semibold text-slate-700 mb-1">
-                  <span>Wheeze Frequency</span><span>72% High</span>
-                </div>
-                <div className="h-2 bg-slate-100 rounded-full overflow-hidden">
-                  <div className="h-full bg-[#9e3b33] w-[72%]" />
-                </div>
-              </div>
-
-              <div className="space-y-1">
-                <div className="flex justify-between text-sm font-semibold text-slate-700 mb-1">
-                  <span>Crackles Count</span><span>12 / Breath</span>
-                </div>
-                <div className="h-2 bg-slate-100 rounded-full overflow-hidden">
-                  <div className="h-full bg-amber-600 w-[45%]" />
-                </div>
-              </div>
-
-              <div className="space-y-1">
-                <div className="flex justify-between text-sm font-semibold text-slate-700 mb-1">
-                  <span>Inspiratory Ratio</span><span>1.2s avg</span>
-                </div>
-                <div className="h-2 bg-slate-100 rounded-full overflow-hidden">
-                  <div className="h-full bg-[#0f172a] w-[60%]" />
-                </div>
-              </div>
+              <p className="text-xs font-bold text-slate-500 uppercase tracking-wide">Acoustic Analysis Details</p>
+              <p className="text-sm text-slate-700 leading-relaxed bg-slate-50 p-4 rounded-lg border border-slate-100">
+                {result.analysis}
+              </p>
             </div>
 
             <div className="flex-1 bg-amber-50 rounded-xl p-5 border border-amber-100">
               <p className="text-xs font-bold text-amber-800 mb-3">Clinical Suggestion</p>
-              <ul className="space-y-3">
-                <li className="flex items-start gap-2 text-sm text-amber-900 font-medium">
+              <div className="flex items-start gap-2 text-sm text-amber-900 font-medium">
                   <ArrowRight size={16} className="mt-0.5 shrink-0" />
-                  Perform 6-minute walk test.
-                </li>
-                <li className="flex items-start gap-2 text-sm text-amber-900 font-medium">
-                  <ArrowRight size={16} className="mt-0.5 shrink-0" />
-                  Administer nebulized bronchodilator.
-                </li>
-                <li className="flex items-start gap-2 text-sm text-amber-900 font-medium">
-                  <ArrowRight size={16} className="mt-0.5 shrink-0" />
-                  Schedule specialist follow-up within 48h.
-                </li>
-              </ul>
+                  <p className="leading-relaxed">{result.recommendation}</p>
+              </div>
             </div>
           </div>
 

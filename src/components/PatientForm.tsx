@@ -27,7 +27,13 @@ export default function PatientForm({ existingPatient = null }: { existingPatien
   }, [])
 
   function handleChange(e: any) {
-    setForm((prev: any) => ({ ...prev, [e.target.name]: e.target.value }))
+    const { name, value } = e.target
+    if (name === 'phone') {
+      const formattedValue = value.replace(/\D/g, '').slice(0, 10)
+      setForm((prev: any) => ({ ...prev, [name]: formattedValue }))
+    } else {
+      setForm((prev: any) => ({ ...prev, [name]: value }))
+    }
   }
 
   async function handleSubmit(e: any) {
@@ -157,6 +163,7 @@ export default function PatientForm({ existingPatient = null }: { existingPatien
           onChange={handleChange}
           placeholder="e.g. 9876543210"
           className="input"
+          maxLength={10}
         />
       </div>
 
