@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>ASHA AI - Patient Management</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .glass-card {
+            background: rgba(255, 255, 255, 0.75);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(188, 202, 192, 0.2);
+        }
+        .ai-insight-border {
+            border: 1px solid transparent;
+            background: linear-gradient(white, white) padding-box,
+                        linear-gradient(to right, #006948, #68dba9) border-box;
+        }
+        .inner-press {
+            box-shadow: inset 0 2px 4px rgba(15, 23, 42, 0.05);
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "primary-fixed-dim": "#68dba9",
+                      "surface-variant": "#e0e3e5",
+                      "surface-container-lowest": "#ffffff",
+                      "on-error": "#ffffff",
+                      "tertiary": "#ba0035",
+                      "secondary": "#565e74",
+                      "background": "#f7f9fb",
+                      "secondary-fixed-dim": "#bec6e0",
+                      "on-primary": "#ffffff",
+                      "tertiary-container": "#e21e49",
+                      "outline-variant": "#bccac0",
+                      "primary-fixed": "#85f8c4",
+                      "surface-container-high": "#e6e8ea",
+                      "secondary-container": "#dae2fd",
+                      "on-tertiary": "#ffffff",
+                      "on-tertiary-fixed": "#40000c",
+                      "inverse-on-surface": "#eff1f3",
+                      "on-surface": "#191c1e",
+                      "surface-container-highest": "#e0e3e5",
+                      "surface-container": "#eceef0",
+                      "outline": "#6d7a72",
+                      "error-container": "#ffdad6",
+                      "secondary-fixed": "#dae2fd",
+                      "tertiary-fixed": "#ffdada",
+                      "surface-dim": "#d8dadc",
+                      "on-secondary": "#ffffff",
+                      "on-primary-fixed": "#002114",
+                      "on-secondary-fixed": "#131b2e",
+                      "on-tertiary-fixed-variant": "#920028",
+                      "primary-container": "#00855d",
+                      "primary": "#006948",
+                      "surface-bright": "#f7f9fb",
+                      "inverse-surface": "#2d3133",
+                      "on-tertiary-container": "#fffbff",
+                      "on-primary-fixed-variant": "#005137",
+                      "on-secondary-fixed-variant": "#3f465c",
+                      "surface-tint": "#006c4a",
+                      "on-surface-variant": "#3d4a42",
+                      "error": "#ba1a1a",
+                      "on-secondary-container": "#5c647a",
+                      "surface": "#f7f9fb",
+                      "inverse-primary": "#68dba9",
+                      "on-error-container": "#93000a",
+                      "on-background": "#191c1e",
+                      "surface-container-low": "#f2f4f6",
+                      "tertiary-fixed-dim": "#ffb3b6",
+                      "on-primary-container": "#f5fff7"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "gutter": "24px",
+                      "container-max": "1280px",
+                      "xxl": "64px",
+                      "xl": "40px",
+                      "sm": "8px",
+                      "xs": "4px",
+                      "lg": "24px",
+                      "md": "16px",
+                      "unit": "4px"
+              },
+              "fontFamily": {
+                      "body-md": ["Plus Jakarta Sans"],
+                      "label-sm": ["Plus Jakarta Sans"],
+                      "display-lg": ["Plus Jakarta Sans"],
+                      "title-md": ["Plus Jakarta Sans"],
+                      "headline-lg": ["Plus Jakarta Sans"],
+                      "body-lg": ["Plus Jakarta Sans"],
+                      "headline-lg-mobile": ["Plus Jakarta Sans"]
+              },
+              "fontSize": {
+                      "body-md": ["16px", {"lineHeight": "1.6", "letterSpacing": "0", "fontWeight": "400"}],
+                      "label-sm": ["14px", {"lineHeight": "1.2", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                      "display-lg": ["48px", {"lineHeight": "1.1", "letterSpacing": "0.02em", "fontWeight": "700"}],
+                      "title-md": ["20px", {"lineHeight": "1.4", "letterSpacing": "0.01em", "fontWeight": "600"}],
+                      "headline-lg": ["32px", {"lineHeight": "1.2", "letterSpacing": "0.01em", "fontWeight": "600"}],
+                      "body-lg": ["18px", {"lineHeight": "1.6", "letterSpacing": "0", "fontWeight": "400"}],
+                      "headline-lg-mobile": ["24px", {"lineHeight": "1.2", "letterSpacing": "0.01em", "fontWeight": "600"}]
+              }
+            },
+          },
+        }
+    </script>
+</head>
+<body class="bg-surface font-body-md text-on-surface">
+<!-- TopNavBar -->
+<header class="fixed top-0 w-full z-50 flex justify-between items-center px-lg h-16 bg-surface/80 backdrop-blur-md border-b border-outline-variant/10 shadow-sm">
+<div class="flex items-center gap-md">
+<span class="text-title-md font-title-md font-bold text-primary">ASHA AI</span>
+<nav class="hidden md:flex items-center gap-lg ml-xl">
+<a class="font-body-md text-body-md text-on-surface-variant/80 hover:text-primary transition-colors" href="#">Home</a>
+<a class="font-body-md text-body-md text-primary border-b-2 border-primary pb-1" href="#">Patients</a>
+<a class="font-body-md text-body-md text-on-surface-variant/80 hover:text-primary transition-colors" href="#">Symptom AI</a>
+<a class="font-body-md text-body-md text-on-surface-variant/80 hover:text-primary transition-colors" href="#">Alerts</a>
+</nav>
+</div>
+<div class="flex items-center gap-md">
+<div class="relative group">
+<span class="material-symbols-outlined text-on-surface-variant cursor-pointer group-hover:text-primary transition-colors">notifications</span>
+<span class="absolute top-0 right-0 w-2 h-2 bg-tertiary rounded-full border-2 border-surface"></span>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant cursor-pointer hover:text-primary transition-colors">settings</span>
+<img alt="Worker Profile" class="w-8 h-8 rounded-full object-cover" data-alt="A professional headshot of a healthcare worker in a clean clinic setting. The lighting is soft and natural, reflecting a trustworthy and empathetic character. The background is slightly out of focus, maintaining a modern and clean healthcare environment aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDtzjL67Cq8pa6S0k5RAFHk-6g8Qd-wiheEOCPATf2j_V26uMsXsx0nQyaBaFKFvT8qXHevfu_tR_NR5UNTIEW1twLFa6yIvKQf1kb_IL8eI9dSGEs6yPnbwLRXLuJgRmBe0RvMdJUKZaDnjzO4sSE8sF-nTJi4ct2k7XrLeH0GeeYB4lobCThK2RgiRammpfQyNc0bc3gx018VlCraZxb4-MWC3OOl6Mz_1nhe2msLmaT99di7PK-jFTbNHT-mw8VuYSj4uRUMqXM"/>
+</div>
+</header>
+<!-- Main Content Shell -->
+<div class="pt-16 flex min-h-screen">
+<!-- SideNavBar -->
+<aside class="hidden lg:flex flex-col fixed left-0 top-16 h-[calc(100vh-64px)] w-64 p-md bg-surface-container-low/70 backdrop-blur-xl border-r border-outline-variant/10">
+<div class="flex flex-col gap-sm">
+<div class="p-md mb-md">
+<h2 class="font-title-md text-primary text-title-md">Frontline Portal</h2>
+<p class="text-label-sm font-label-sm text-on-surface-variant/70">Regional Sector A</p>
+</div>
+<nav class="space-y-1">
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant/80 hover:bg-surface-variant/50 rounded-lg transition-all" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-label-sm">Dashboard</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm bg-primary-container text-on-primary-container rounded-lg transition-all" href="#">
+<span class="material-symbols-outlined">personal_injury</span>
+<span class="font-label-sm">Patient Records</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant/80 hover:bg-surface-variant/50 rounded-lg transition-all" href="#">
+<span class="material-symbols-outlined">health_and_safety</span>
+<span class="font-label-sm">Diagnostic Tools</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant/80 hover:bg-surface-variant/50 rounded-lg transition-all" href="#">
+<span class="material-symbols-outlined">calendar_today</span>
+<span class="font-label-sm">Shift Schedule</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant/80 hover:bg-surface-variant/50 rounded-lg transition-all" href="#">
+<span class="material-symbols-outlined">map</span>
+<span class="font-label-sm">Resource Map</span>
+</a>
+</nav>
+<div class="mt-xl border-t border-outline-variant/10 pt-md">
+<p class="px-md text-xs font-bold uppercase tracking-widest text-on-surface-variant/40 mb-sm">Village Filter</p>
+<div class="space-y-1">
+<label class="flex items-center gap-md px-md py-sm cursor-pointer hover:bg-surface-variant/30 rounded-lg">
+<input checked="" class="rounded border-outline text-primary focus:ring-primary" type="checkbox"/>
+<span class="font-label-sm">Anantapur Central</span>
+</label>
+<label class="flex items-center gap-md px-md py-sm cursor-pointer hover:bg-surface-variant/30 rounded-lg">
+<input class="rounded border-outline text-primary focus:ring-primary" type="checkbox"/>
+<span class="font-label-sm">Bukkacherla North</span>
+</label>
+<label class="flex items-center gap-md px-md py-sm cursor-pointer hover:bg-surface-variant/30 rounded-lg">
+<input class="rounded border-outline text-primary focus:ring-primary" type="checkbox"/>
+<span class="font-label-sm">Dharmavaram West</span>
+</label>
+</div>
+</div>
+</div>
+<button class="mt-auto bg-tertiary text-on-tertiary font-label-sm py-md rounded-lg flex items-center justify-center gap-sm active:scale-95 duration-200">
+<span class="material-symbols-outlined">emergency_share</span>
+                Emergency Protocol
+            </button>
+</aside>
+<!-- Canvas -->
+<main class="flex-1 lg:ml-64 p-lg bg-surface">
+<!-- Header Section -->
+<div class="max-w-container-max mx-auto mb-xl">
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-lg mb-xl">
+<div>
+<h1 class="font-headline-lg text-headline-lg text-on-surface mb-xs">Patient Records</h1>
+<p class="text-body-lg text-on-surface-variant font-body-lg">Managing community health across 3 rural sectors.</p>
+</div>
+<!-- Stats Bento Row -->
+<div class="grid grid-cols-2 sm:grid-cols-3 gap-md">
+<div class="glass-card p-md rounded-xl flex flex-col justify-center min-w-[120px]">
+<span class="text-label-sm text-on-surface-variant/60">Total</span>
+<span class="text-title-md font-bold text-on-surface">32</span>
+</div>
+<div class="glass-card p-md rounded-xl flex flex-col justify-center min-w-[120px] border-l-4 border-l-primary">
+<span class="text-label-sm text-on-surface-variant/60">Stable</span>
+<span class="text-title-md font-bold text-primary">28</span>
+</div>
+<div class="glass-card p-md rounded-xl flex flex-col justify-center min-w-[120px] border-l-4 border-l-tertiary">
+<span class="text-label-sm text-on-surface-variant/60">Critical</span>
+<span class="text-title-md font-bold text-tertiary">4</span>
+</div>
+</div>
+</div>
+<!-- Glass Filter Bar -->
+<div class="glass-card p-md rounded-2xl flex flex-col md:flex-row gap-md items-center mb-xl shadow-sm">
+<div class="relative flex-1 w-full">
+<span class="material-symbols-outlined absolute left-md top-1/2 -translate-y-1/2 text-on-surface-variant/50">search</span>
+<input class="w-full pl-xl pr-md py-md bg-surface-container-low border-none rounded-xl focus:ring-2 focus:ring-primary/20 inner-press placeholder:text-on-surface-variant/40" placeholder="Search by name, ID, or condition..." type="text"/>
+</div>
+<div class="flex gap-sm w-full md:w-auto">
+<button class="flex-1 md:flex-none flex items-center justify-center gap-sm px-lg py-md border border-outline-variant/30 rounded-xl hover:bg-surface-variant/20 transition-colors font-label-sm">
+<span class="material-symbols-outlined text-body-md">filter_list</span>
+                            Filter
+                        </button>
+<button class="flex-1 md:flex-none flex items-center justify-center gap-sm px-lg py-md bg-primary text-on-primary rounded-xl hover:bg-primary-container transition-colors font-label-sm active:scale-95 duration-200">
+<span class="material-symbols-outlined text-body-md">person_add</span>
+                            Add Patient
+                        </button>
+</div>
+</div>
+<!-- Patients Bento Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-lg">
+<!-- Critical Card -->
+<div class="glass-card p-lg rounded-2xl border-l-4 border-l-tertiary flex flex-col h-full hover:shadow-md transition-shadow group">
+<div class="flex justify-between items-start mb-md">
+<img alt="Kamala Devi" class="w-16 h-16 rounded-full object-cover border-2 border-white shadow-sm" data-alt="A portrait of an elderly woman in India, her face lined with wisdom and experience. She is wearing a traditional sari. The lighting is warm and golden, evoking a sense of human dignity and care. The background shows a soft-focus interior of a rural home." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDojXHzaDxbEnLcbFCpT4zfLTDc1BsZoEkBlEkhylbI_L4mWzUWsKJDq2BIIqqBj0ZRtf8ifDpvtqfdI_KtktSnRypB-yzjArb0L4h7HyEQ6--TzL5Zo1fW3BkbsfhYuSmyyFuh7Cd_ZLFSJgjOt39Os4ic4HCfcLzzhNO1EzBVxWTkFL1REGbGijJcMdWPzinrKHA5Kf-zvX55jnKfojDMBrPLWgbaFTS--mr_pGDuyQImatn1A_zyKaJsHa3eqCAqGwx00SHTw5I"/>
+<span class="px-md py-xs bg-error-container text-on-error-container text-xs font-bold rounded-full uppercase tracking-wider">Critical</span>
+</div>
+<div class="mb-xl">
+<h3 class="text-title-md font-title-md font-bold text-on-surface group-hover:text-primary transition-colors">Kamala Devi</h3>
+<p class="text-label-sm text-on-surface-variant/60 mb-sm">ID: #AS-2024-0892</p>
+<div class="flex flex-wrap gap-xs">
+<span class="px-sm py-1 bg-surface-container text-on-surface-variant text-[10px] rounded-md font-bold">Hypertension</span>
+<span class="px-sm py-1 bg-surface-container text-on-surface-variant text-[10px] rounded-md font-bold">Post-Op</span>
+</div>
+</div>
+<div class="mt-auto pt-md border-t border-outline-variant/10 flex items-center justify-between">
+<div class="flex flex-col">
+<span class="text-[10px] text-on-surface-variant/50 uppercase">Last Visit</span>
+<span class="text-label-sm font-bold">2 hours ago</span>
+</div>
+<button class="px-lg py-sm bg-primary text-on-primary rounded-lg text-label-sm font-bold hover:bg-primary-container transition-colors active:scale-95 duration-200">View Records</button>
+</div>
+</div>
+<!-- Stable Card -->
+<div class="glass-card p-lg rounded-2xl border-l-4 border-l-primary flex flex-col h-full hover:shadow-md transition-shadow group">
+<div class="flex justify-between items-start mb-md">
+<img alt="Rajesh Kumar" class="w-16 h-16 rounded-full object-cover border-2 border-white shadow-sm" data-alt="A portrait of a middle-aged man with a kind and resilient expression. He has short black hair and is dressed in professional yet practical rural attire. The setting is bright and sunny, symbolizing health and recovery. Minimalist clinic aesthetic in the background." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDaw0Y2OIS-Oh7vVc0fi3IRdBBZTYLj65UBpBX5xpVRtA2os3Cd9MGMRfTV6w_xr-W9C6ol-XzJSFT4nWWcDx6Km66V3oursFhmhq4JIORgAo5ing4qfNsJ92Ppn2PviuJdCoGly_G-CvUXPuR5CahfkWYh4H3lZd85L7jjoWS-O707rRQa__zppNmxnaCEc6OIz7_8wn3miCzOpWgQggn0P-l74mbvpTcJZ9khklpNNfKeFcVE-k8Gk8FN1e6T66Su5RbQIhfGvnI"/>
+<span class="px-md py-xs bg-primary-fixed text-on-primary-fixed text-xs font-bold rounded-full uppercase tracking-wider">Stable</span>
+</div>
+<div class="mb-xl">
+<h3 class="text-title-md font-title-md font-bold text-on-surface group-hover:text-primary transition-colors">Rajesh Kumar</h3>
+<p class="text-label-sm text-on-surface-variant/60 mb-sm">ID: #AS-2024-1140</p>
+<div class="flex flex-wrap gap-xs">
+<span class="px-sm py-1 bg-surface-container text-on-surface-variant text-[10px] rounded-md font-bold">Diabetic Management</span>
+</div>
+</div>
+<div class="mt-auto pt-md border-t border-outline-variant/10 flex items-center justify-between">
+<div class="flex flex-col">
+<span class="text-[10px] text-on-surface-variant/50 uppercase">Last Visit</span>
+<span class="text-label-sm font-bold">Yesterday</span>
+</div>
+<button class="px-lg py-sm bg-primary text-on-primary rounded-lg text-label-sm font-bold hover:bg-primary-container transition-colors active:scale-95 duration-200">View Records</button>
+</div>
+</div>
+<!-- AI Highlight Card -->
+<div class="glass-card ai-insight-border p-lg rounded-2xl flex flex-col h-full hover:shadow-md transition-shadow group">
+<div class="flex justify-between items-start mb-md">
+<div class="w-16 h-16 rounded-full bg-primary-container/20 flex items-center justify-center border-2 border-white shadow-sm">
+<span class="material-symbols-outlined text-primary text-headline-lg">psychology</span>
+</div>
+<span class="px-md py-xs bg-secondary-container text-on-secondary-container text-xs font-bold rounded-full uppercase tracking-wider">AI Insight</span>
+</div>
+<div class="mb-xl">
+<h3 class="text-title-md font-title-md font-bold text-on-surface">Community Health Trend</h3>
+<p class="text-body-md text-on-surface-variant/80 mt-sm">Sudden uptick in respiratory complaints in Anantapur Sector. Recommend proactive screening.</p>
+</div>
+<div class="mt-auto pt-md border-t border-outline-variant/10">
+<button class="w-full py-sm border border-primary text-primary rounded-lg text-label-sm font-bold hover:bg-primary/5 transition-colors active:scale-95 duration-200">Launch Sector Analysis</button>
+</div>
+</div>
+<!-- Another Stable Card -->
+<div class="glass-card p-lg rounded-2xl border-l-4 border-l-primary flex flex-col h-full hover:shadow-md transition-shadow group">
+<div class="flex justify-between items-start mb-md">
+<img alt="Priya Singh" class="w-16 h-16 rounded-full object-cover border-2 border-white shadow-sm" data-alt="A portrait of a young woman with a bright and hopeful expression, wearing colorful clothing. She is sitting in a well-lit, modern clinic environment. The focus is sharp on her friendly face, with soft-bokeh medical equipment in the background." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAFARxqn1gDW5rCV4ayPKo0NppSvVPDYGqYAM_jrmDzmH4M7H8CrZNiJC3e_LkW-oRyAPdg8EYdXldf7KKxgvOx2MBGb39wr17pvryh-Jir24JswFHptUHqDa-AIgAYiFEZZPSekQSmjD-hGALtk73WNkOhuvbMvAwaigVSDFw_VnaRJd_3eMzI_dnA12aGUtzBIUMuPBeWRymzE8tPmiI-pxney7vC-fe3m4mbDumqzyGt6MQMIQpFBw-nTpiU8ZWcbOAg9dH6jQ0"/>
+<span class="px-md py-xs bg-primary-fixed text-on-primary-fixed text-xs font-bold rounded-full uppercase tracking-wider">Stable</span>
+</div>
+<div class="mb-xl">
+<h3 class="text-title-md font-title-md font-bold text-on-surface group-hover:text-primary transition-colors">Priya Singh</h3>
+<p class="text-label-sm text-on-surface-variant/60 mb-sm">ID: #AS-2024-0021</p>
+<div class="flex flex-wrap gap-xs">
+<span class="px-sm py-1 bg-surface-container text-on-surface-variant text-[10px] rounded-md font-bold">Prenatal Checkup</span>
+</div>
+</div>
+<div class="mt-auto pt-md border-t border-outline-variant/10 flex items-center justify-between">
+<div class="flex flex-col">
+<span class="text-[10px] text-on-surface-variant/50 uppercase">Last Visit</span>
+<span class="text-label-sm font-bold">Oct 12, 2024</span>
+</div>
+<button class="px-lg py-sm bg-primary text-on-primary rounded-lg text-label-sm font-bold hover:bg-primary-container transition-colors active:scale-95 duration-200">View Records</button>
+</div>
+</div>
+<!-- Patient List Add Placeholder -->
+<div class="border-2 border-dashed border-outline-variant/30 rounded-2xl flex flex-col items-center justify-center p-lg h-full hover:border-primary/50 transition-colors cursor-pointer group">
+<div class="w-12 h-12 rounded-full bg-surface-container-high flex items-center justify-center mb-md group-hover:bg-primary/10 transition-colors">
+<span class="material-symbols-outlined text-on-surface-variant/40 group-hover:text-primary">add</span>
+</div>
+<span class="text-label-sm font-bold text-on-surface-variant/60 group-hover:text-primary">Register New Patient</span>
+</div>
+</div>
+</div>
+</main>
+</div>
+<!-- Footer -->
+<footer class="w-full py-xl px-lg flex flex-col md:flex-row justify-between items-center gap-md bg-surface-container-highest border-t border-outline-variant/20">
+<div class="flex flex-col gap-xs text-center md:text-left">
+<span class="font-title-md text-on-surface text-title-md font-bold">ASHA AI</span>
+<p class="text-label-sm font-label-sm text-on-surface-variant/80">© 2024 ASHA AI Healthcare Solutions</p>
+</div>
+<div class="flex flex-wrap justify-center gap-lg">
+<a class="text-label-sm font-label-sm text-on-surface-variant/80 hover:text-primary transition-colors" href="#">Privacy Policy</a>
+<a class="text-label-sm font-label-sm text-on-surface-variant/80 hover:text-primary transition-colors" href="#">Terms of Service</a>
+<a class="text-label-sm font-label-sm text-on-surface-variant/80 hover:text-primary transition-colors" href="#">Compliance</a>
+<a class="text-label-sm font-label-sm text-on-surface-variant/80 hover:text-primary transition-colors" href="#">Contact Support</a>
+</div>
+</footer>
+</body></html>

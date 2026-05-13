@@ -1,27 +1,25 @@
 'use client'
 import { useState } from 'react'
 import { sendCriticalAlert } from '../lib/sendAlert'
+import { AlertTriangle, CheckCircle2, Send, Phone, X } from 'lucide-react'
 
-export default function AlertBanner({ assessment, patient }: { assessment?: any, patient?: any }) {
-  const [sending, setSending] = useState(false)
-  const [sent, setSent] = useState(false)
-  const [error, setError] = useState<string | null>(null)
+export default function AlertBanner({ assessment, patient }: { assessment?: any; patient?: any }) {
+  const [sending, setSending]       = useState(false)
+  const [sent, setSent]             = useState(false)
+  const [error, setError]           = useState<string | null>(null)
   const [doctorPhone, setDoctorPhone] = useState('')
+  const [dismissed, setDismissed]   = useState(false)
 
-  if (!assessment?.referralNeeded) return null
+  if (!assessment?.referralNeeded || dismissed) return null
 
   const isCritical = assessment.severity === 'CRITICAL'
-  const isHigh = assessment.severity === 'HIGH'
+  const colors = isCritical
+    ? { bar: 'bg-red-600', bg: 'bg-red-50', border: 'border-red-200', text: 'text-red-900', sub: 'text-red-700', btn: 'bg-red-600 hover:bg-red-700' }
+    : { bar: 'bg-orange-500', bg: 'bg-orange-50', border: 'border-orange-200', text: 'text-orange-900', sub: 'text-orange-700', btn: 'bg-orange-500 hover:bg-orange-600' }
 
-  async function handleSendAlert() {
-    if (!doctorPhone.trim()) {
-      setError('Please enter the doctor\'s phone number')
-      return
-    }
-
-    setSending(true)
-    setError(null)
-
+  async function handleSend() {
+    if (!doctorPhone.trim()) { setError("Enter the doctor's WhatsApp number"); return }
+    setSending(true); setError(null)
     try {
       await sendCriticalAlert({
         patientName: patient?.name || 'Unknown Patient',
@@ -34,75 +32,78 @@ export default function AlertBanner({ assessment, patient }: { assessment?: any,
       })
       setSent(true)
     } catch (err: any) {
-      setError(err.message || 'Failed to send alert. Check the phone number and try again.')
+      setError(err.message || 'Failed to send.')
     } finally {
       setSending(false)
     }
   }
 
   return (
-    <div className={`rounded-xl border-2 p-4 space-y-3 ${
-      isCritical
-        ? 'bg-red-50 border-red-300'
-        : 'bg-orange-50 border-orange-300'
-    }`}>
+    <div className={`rounded-xl border ${colors.bg} ${colors.border} overflow-hidden animate-slide-up`}>
+      {/* Colored top bar */}
+      <div className={`h-1 w-full ${colors.bar}`} />
 
-      {/* Header */}
-      <div className="flex items-center gap-2">
-        <svg className={`w-5 h-5 ${isCritical ? 'text-red-600' : 'text-orange-600'}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.834-1.964-.834-2.732 0L3.072 16.5C2.302 17.333 3.264 19 4.804 19z" />
-        </svg>
-        <div>
-          <h3 className={`font-bold text-sm ${isCritical ? 'text-red-800' : 'text-orange-800'}`}>
-            {isCritical ? '🚨 Critical Case — Immediate Referral Needed' : '⚠️ High Severity — Doctor Referral Needed'}
-          </h3>
-          <p className={`text-xs mt-0.5 ${isCritical ? 'text-red-600' : 'text-orange-600'}`}>
-            {assessment.referralReason}
-          </p>
-        </div>
-      </div>
-
-      {/* Send alert section */}
-      {sent ? (
-        <div className="bg-green-50 border border-green-200 rounded-lg px-4 py-3 flex items-center gap-2">
-          <svg className="w-4 h-4 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-          </svg>
-          <span className="text-sm text-green-700 font-medium">
-            Alert sent to doctor via WhatsApp!
-          </span>
-        </div>
-      ) : (
-        <div className="space-y-2">
-          <p className="text-xs text-gray-600">
-            Enter the PHC doctor's WhatsApp number to send an instant alert:
-          </p>
-          <div className="flex gap-2">
-            <input
-              type="tel"
-              value={doctorPhone}
-              onChange={(e) => setDoctorPhone(e.target.value)}
-              placeholder="+91 98765 43210"
-              className="input-field flex-1 text-sm"
-            />
-            <button
-              onClick={handleSendAlert}
-              disabled={sending}
-              className={`px-4 py-2 rounded-lg text-sm font-medium text-white transition-colors flex-shrink-0 ${
-                isCritical
-                  ? 'bg-red-600 hover:bg-red-700'
-                  : 'bg-orange-600 hover:bg-orange-700'
-              } disabled:opacity-50`}
-            >
-              {sending ? 'Sending...' : 'Send Alert'}
-            </button>
+      <div className="px-4 py-4 space-y-3">
+        {/* Header row */}
+        <div className="flex items-start justify-between gap-3">
+          <div className="flex items-start gap-3">
+            <div className={`w-8 h-8 rounded-lg flex items-center justify-center shrink-0 ${colors.bar} shadow-sm`}>
+              <AlertTriangle size={15} className="text-white" />
+            </div>
+            <div>
+              <h3 className={`font-semibold text-sm ${colors.text}`}>
+                {isCritical ? 'Critical — Immediate Referral Required' : 'High Priority Referral Needed'}
+              </h3>
+              <p className={`text-xs mt-0.5 leading-relaxed ${colors.sub}`}>
+                {assessment.referralReason}
+              </p>
+            </div>
           </div>
-          {error && (
-            <p className="text-xs text-red-600">{error}</p>
+          <button onClick={() => setDismissed(true)} className="text-slate-400 hover:text-slate-600 mt-0.5 shrink-0">
+            <X size={15} />
+          </button>
+        </div>
+
+        {/* WhatsApp dispatch */}
+        <div className="bg-white/70 rounded-xl p-3 border border-white/80">
+          {sent ? (
+            <div className="flex items-center gap-2.5">
+              <CheckCircle2 size={16} className="text-emerald-600 shrink-0" />
+              <div>
+                <p className="text-xs font-semibold text-emerald-800">WhatsApp alert sent successfully</p>
+                <p className="text-[11px] text-emerald-600">Doctor has been notified via WhatsApp.</p>
+              </div>
+            </div>
+          ) : (
+            <div className="space-y-2.5">
+              <p className="text-[11px] font-semibold text-slate-500 uppercase tracking-wider flex items-center gap-1.5">
+                <Phone size={11} /> Send WhatsApp Alert to Doctor
+              </p>
+              <div className="flex gap-2">
+                <input
+                  type="tel"
+                  value={doctorPhone}
+                  onChange={e => setDoctorPhone(e.target.value)}
+                  placeholder="+91 doctor's number"
+                  className="input text-xs py-2 flex-1"
+                />
+                <button
+                  onClick={handleSend}
+                  disabled={sending}
+                  className={`btn-sm text-white ${colors.btn} px-4 rounded-lg transition-colors`}
+                >
+                  {sending ? 'Sending...' : <><Send size={12} /> Send</>}
+                </button>
+              </div>
+              {error && (
+                <p className="text-[11px] text-red-600 flex items-center gap-1">
+                  <AlertTriangle size={11} /> {error}
+                </p>
+              )}
+            </div>
           )}
         </div>
-      )}
-
+      </div>
     </div>
   )
 }

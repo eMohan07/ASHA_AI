@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>ASHA AI - Premium Frontline Dashboard</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "primary-fixed-dim": "#68dba9",
+                    "surface-variant": "#e0e3e5",
+                    "surface-container-lowest": "#ffffff",
+                    "on-error": "#ffffff",
+                    "tertiary": "#ba0035",
+                    "secondary": "#565e74",
+                    "background": "#f7f9fb",
+                    "secondary-fixed-dim": "#bec6e0",
+                    "on-primary": "#ffffff",
+                    "tertiary-container": "#e21e49",
+                    "outline-variant": "#bccac0",
+                    "primary-fixed": "#85f8c4",
+                    "surface-container-high": "#e6e8ea",
+                    "secondary-container": "#dae2fd",
+                    "on-tertiary": "#ffffff",
+                    "on-tertiary-fixed": "#40000c",
+                    "inverse-on-surface": "#eff1f3",
+                    "on-surface": "#191c1e",
+                    "surface-container-highest": "#e0e3e5",
+                    "surface-container": "#eceef0",
+                    "outline": "#6d7a72",
+                    "error-container": "#ffdad6",
+                    "secondary-fixed": "#dae2fd",
+                    "tertiary-fixed": "#ffdada",
+                    "surface-dim": "#d8dadc",
+                    "on-secondary": "#ffffff",
+                    "on-primary-fixed": "#002114",
+                    "on-secondary-fixed": "#131b2e",
+                    "on-tertiary-fixed-variant": "#920028",
+                    "primary-container": "#00855d",
+                    "primary": "#006948",
+                    "surface-bright": "#f7f9fb",
+                    "inverse-surface": "#2d3133",
+                    "on-tertiary-container": "#fffbff",
+                    "on-primary-fixed-variant": "#005137",
+                    "on-secondary-fixed-variant": "#3f465c",
+                    "surface-tint": "#006c4a",
+                    "on-surface-variant": "#3d4a42",
+                    "error": "#ba1a1a",
+                    "on-secondary-container": "#5c647a",
+                    "surface": "#f7f9fb",
+                    "inverse-primary": "#68dba9",
+                    "on-error-container": "#93000a",
+                    "on-background": "#191c1e",
+                    "surface-container-low": "#f2f4f6",
+                    "tertiary-fixed-dim": "#ffb3b6",
+                    "on-primary-container": "#f5fff7"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "16px",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "gutter": "24px",
+                    "container-max": "1280px",
+                    "xxl": "64px",
+                    "xl": "40px",
+                    "sm": "8px",
+                    "xs": "4px",
+                    "lg": "24px",
+                    "md": "16px",
+                    "unit": "4px"
+            },
+            "fontFamily": {
+                    "body-md": ["Plus Jakarta Sans"],
+                    "label-sm": ["Plus Jakarta Sans"],
+                    "display-lg": ["Plus Jakarta Sans"],
+                    "title-md": ["Plus Jakarta Sans"],
+                    "headline-lg": ["Plus Jakarta Sans"],
+                    "body-lg": ["Plus Jakarta Sans"],
+                    "headline-lg-mobile": ["Plus Jakarta Sans"]
+            },
+            "fontSize": {
+                    "body-md": ["16px", {"lineHeight": "1.6", "letterSpacing": "0", "fontWeight": "400"}],
+                    "label-sm": ["14px", {"lineHeight": "1.2", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                    "display-lg": ["48px", {"lineHeight": "1.1", "letterSpacing": "0.02em", "fontWeight": "700"}],
+                    "title-md": ["20px", {"lineHeight": "1.4", "letterSpacing": "0.01em", "fontWeight": "600"}],
+                    "headline-lg": ["32px", {"lineHeight": "1.2", "letterSpacing": "0.01em", "fontWeight": "600"}],
+                    "body-lg": ["18px", {"lineHeight": "1.6", "letterSpacing": "0", "fontWeight": "400"}],
+                    "headline-lg-mobile": ["24px", {"lineHeight": "1.2", "letterSpacing": "0.01em", "fontWeight": "600"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .glass-card {
+            background: rgba(255, 255, 255, 0.75);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+        }
+        .dark-glass-card {
+            background: rgba(25, 28, 30, 0.9);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .ai-insight-border {
+            position: relative;
+        }
+        .ai-insight-border::after {
+            content: '';
+            position: absolute;
+            inset: -1px;
+            border-radius: 17px;
+            padding: 1px;
+            background: linear-gradient(to bottom right, #006948, #dae2fd);
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            pointer-events: none;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-surface font-body-md overflow-x-hidden">
+<!-- Top Navigation Bar -->
+<header class="fixed top-0 w-full z-50 flex justify-between items-center px-lg h-16 bg-surface/80 backdrop-blur-md border-b border-outline-variant/10 shadow-sm">
+<div class="flex items-center gap-md">
+<span class="text-title-md font-title-md font-extrabold text-primary">ASHA AI</span>
+<nav class="hidden md:flex gap-lg ml-xl">
+<a class="font-body-md text-body-md text-primary border-b-2 border-primary pb-1 transition-colors" href="#">Home</a>
+<a class="font-body-md text-body-md text-on-surface-variant/80 hover:text-primary transition-colors" href="#">Patients</a>
+<a class="font-body-md text-body-md text-on-surface-variant/80 hover:text-primary transition-colors" href="#">Symptom AI</a>
+<a class="font-body-md text-body-md text-on-surface-variant/80 hover:text-primary transition-colors" href="#">Alerts</a>
+</nav>
+</div>
+<div class="flex items-center gap-md">
+<div class="relative hidden sm:block">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant">search</span>
+<input class="pl-10 pr-4 py-2 bg-surface-container-low border-none rounded-full text-body-md focus:ring-2 focus:ring-primary w-64" placeholder="Search patients..." type="text"/>
+</div>
+<button class="material-symbols-outlined text-on-surface-variant hover:text-primary active:scale-95 transition-all">notifications</button>
+<button class="material-symbols-outlined text-on-surface-variant hover:text-primary active:scale-95 transition-all">settings</button>
+<img alt="Worker Profile" class="w-10 h-10 rounded-full border-2 border-primary-fixed" data-alt="A professional portrait of a healthcare worker with a warm, confident expression. She is wearing clinical attire in a brightly lit, modern medical facility with soft daylight streaming through large windows. The image has a clean, high-key lighting style and a professional, trustworthy atmosphere consistent with a premium medical brand." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCgEzyaToeW9p-B0tpnB4OnYS6yvftOuFcGz6WerDLyb0NIsq3K2T8-f8ZA4D-niHiSq8qU-WuC_t_Wfp9OW8kJi_yWk-C9XE-TTmXI7LJRIKdRPdt7P1PKwrvMSFwapB0HH1KfodYUmcHNbNxKkVjXkrXyTv54pm4usgkkCCdR_o_6uRo2dCc1W_9DrIhPVmIf410gDARR9XZq5AObxq-Rhl2yp8htWGvxassf6ZiiwizcoKakT3zT7-MB65CzHmR04OdUW2oF3uA"/>
+</div>
+</header>
+<!-- Side Navigation Bar (Hidden on Mobile) -->
+<aside class="hidden lg:flex flex-col fixed left-0 top-16 h-[calc(100vh-64px)] w-64 p-md bg-surface-container-low/70 backdrop-blur-xl border-r border-outline-variant/10 z-40">
+<div class="mb-xl px-sm">
+<h2 class="font-title-md text-primary font-bold">Frontline Portal</h2>
+<p class="font-label-sm text-on-surface-variant/70">Regional Sector A</p>
+</div>
+<nav class="flex flex-col gap-xs flex-1">
+<a class="flex items-center gap-md px-md py-3 bg-primary-container text-on-primary-container rounded-lg transition-all duration-300" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">dashboard</span>
+<span class="font-label-sm">Dashboard</span>
+</a>
+<a class="flex items-center gap-md px-md py-3 text-on-surface-variant hover:bg-surface-variant/50 rounded-lg transition-all duration-300" href="#">
+<span class="material-symbols-outlined">personal_injury</span>
+<span class="font-label-sm">Patient Records</span>
+</a>
+<a class="flex items-center gap-md px-md py-3 text-on-surface-variant hover:bg-surface-variant/50 rounded-lg transition-all duration-300" href="#">
+<span class="material-symbols-outlined">health_and_safety</span>
+<span class="font-label-sm">Diagnostic Tools</span>
+</a>
+<a class="flex items-center gap-md px-md py-3 text-on-surface-variant hover:bg-surface-variant/50 rounded-lg transition-all duration-300" href="#">
+<span class="material-symbols-outlined">calendar_today</span>
+<span class="font-label-sm">Shift Schedule</span>
+</a>
+<a class="flex items-center gap-md px-md py-3 text-on-surface-variant hover:bg-surface-variant/50 rounded-lg transition-all duration-300" href="#">
+<span class="material-symbols-outlined">map</span>
+<span class="font-label-sm">Resource Map</span>
+</a>
+</nav>
+<button class="mt-auto mb-lg py-3 px-md bg-tertiary text-on-tertiary rounded-xl font-label-sm hover:opacity-90 active:scale-95 transition-all">
+            Emergency Protocol
+        </button>
+<div class="flex flex-col gap-xs pt-md border-t border-outline-variant/10">
+<a class="flex items-center gap-md px-md py-2 text-on-surface-variant hover:text-primary transition-all" href="#">
+<span class="material-symbols-outlined">help</span>
+<span class="font-label-sm">Support</span>
+</a>
+<a class="flex items-center gap-md px-md py-2 text-on-surface-variant hover:text-primary transition-all" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-label-sm">Settings</span>
+</a>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="lg:ml-64 pt-16 min-h-screen">
+<!-- Hero Section -->
+<section class="relative px-lg py-xxl overflow-hidden bg-surface-bright">
+<!-- Background Decorative Element -->
+<div class="absolute top-0 right-0 -translate-y-1/4 translate-x-1/4 w-[600px] h-[600px] bg-primary-fixed/20 rounded-full blur-[100px] pointer-events-none"></div>
+<div class="max-w-container-max mx-auto relative z-10">
+<div class="max-w-3xl">
+<span class="inline-block px-md py-1 bg-primary/10 text-primary rounded-full font-label-sm mb-md">HEALTH WORKER PORTAL</span>
+<h1 class="font-display-lg text-display-lg text-on-surface mb-lg">
+                        Empowering Healthcare at the <span class="text-primary italic">Frontline.</span>
+</h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant mb-xl max-w-2xl">
+                        Integrated AI tools designed for rapid diagnostics, patient monitoring, and efficient medical logistics in underserved regions.
+                    </p>
+<!-- Glassmorphic Search Bar -->
+<div class="glass-card ai-insight-border rounded-xl p-xs flex items-center shadow-lg max-w-2xl group focus-within:shadow-xl transition-all">
+<span class="material-symbols-outlined ml-md text-primary">search</span>
+<input class="flex-1 bg-transparent border-none focus:ring-0 text-body-md py-md px-md text-on-surface placeholder-on-surface-variant/50" placeholder="Lookup patient ID, condition, or location..." type="text"/>
+<button class="bg-primary text-on-primary px-xl py-3 rounded-lg font-label-sm hover:bg-primary-container active:scale-95 transition-all mr-xs">
+                            Find Patient
+                        </button>
+</div>
+</div>
+</div>
+</section>
+<!-- Impact Metrics Section -->
+<section class="px-lg pb-xxl">
+<div class="max-w-container-max mx-auto">
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-lg">
+<!-- Metric 1 -->
+<div class="glass-card p-xl rounded-xl border border-white/50 shadow-sm flex flex-col items-center text-center">
+<div class="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mb-md">
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">groups</span>
+</div>
+<span class="text-[40px] font-bold text-on-surface leading-tight">850k+</span>
+<p class="font-label-sm text-on-surface-variant uppercase tracking-wider">Active Workers</p>
+</div>
+<!-- Metric 2 -->
+<div class="glass-card p-xl rounded-xl border border-white/50 shadow-sm flex flex-col items-center text-center">
+<div class="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mb-md">
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">diversity_3</span>
+</div>
+<span class="text-[40px] font-bold text-on-surface leading-tight">1:1000</span>
+<p class="font-label-sm text-on-surface-variant uppercase tracking-wider">Service Ratio</p>
+</div>
+<!-- Metric 3 -->
+<div class="glass-card p-xl rounded-xl border border-white/50 shadow-sm flex flex-col items-center text-center">
+<div class="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mb-md">
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">monitoring</span>
+</div>
+<span class="text-[40px] font-bold text-on-surface leading-tight">94%</span>
+<p class="font-label-sm text-on-surface-variant uppercase tracking-wider">Accuracy Rate</p>
+</div>
+<!-- Metric 4 -->
+<div class="glass-card p-xl rounded-xl border border-white/50 shadow-sm flex flex-col items-center text-center">
+<div class="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mb-md">
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">public</span>
+</div>
+<span class="text-[40px] font-bold text-on-surface leading-tight">12M+</span>
+<p class="font-label-sm text-on-surface-variant uppercase tracking-wider">Lives Impacted</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Core Frontline Tools -->
+<section class="px-lg pb-xxl bg-surface-container-low">
+<div class="max-w-container-max mx-auto py-xl">
+<div class="flex flex-col md:flex-row justify-between items-end mb-xl gap-md">
+<div>
+<h2 class="font-headline-lg text-headline-lg text-on-surface">Core Frontline Tools</h2>
+<p class="font-body-md text-on-surface-variant mt-sm max-w-xl">Accelerate health delivery with specialized AI modules tailored for regional field operations.</p>
+</div>
+<button class="flex items-center gap-sm text-primary font-label-sm hover:underline">
+                        View All Tools <span class="material-symbols-outlined">arrow_forward</span>
+</button>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-xl">
+<!-- Tool 1: Health Monitor -->
+<div class="group relative overflow-hidden bg-white rounded-xl shadow-sm hover:shadow-xl transition-all duration-300 p-lg flex flex-col h-[320px]">
+<div class="w-16 h-16 bg-primary/5 rounded-xl flex items-center justify-center mb-lg group-hover:scale-110 transition-transform duration-300">
+<span class="material-symbols-outlined text-primary text-4xl">ecg_heart</span>
+</div>
+<h3 class="font-title-md text-title-md text-on-surface mb-md">Health Monitor</h3>
+<p class="font-body-md text-on-surface-variant flex-1">Real-time vital tracking and risk stratification for high-risk patient groups in rural clusters.</p>
+<div class="mt-auto pt-lg">
+<span class="inline-flex items-center text-primary font-label-sm">Launch Tool <span class="material-symbols-outlined ml-xs text-sm">open_in_new</span></span>
+</div>
+</div>
+<!-- Tool 2: Respiratory AI -->
+<div class="group relative overflow-hidden bg-white rounded-xl shadow-sm hover:shadow-xl transition-all duration-300 p-lg flex flex-col h-[320px]">
+<div class="w-16 h-16 bg-primary/5 rounded-xl flex items-center justify-center mb-lg group-hover:scale-110 transition-transform duration-300">
+<span class="material-symbols-outlined text-primary text-4xl">air</span>
+</div>
+<h3 class="font-title-md text-title-md text-on-surface mb-md">Respiratory AI</h3>
+<p class="font-body-md text-on-surface-variant flex-1">Acoustic cough analysis and oxygen saturation modeling to detect early-stage lung distress.</p>
+<div class="mt-auto pt-lg">
+<span class="inline-flex items-center text-primary font-label-sm">Launch Tool <span class="material-symbols-outlined ml-xs text-sm">open_in_new</span></span>
+</div>
+</div>
+<!-- Tool 3: Education -->
+<div class="group relative overflow-hidden bg-white rounded-xl shadow-sm hover:shadow-xl transition-all duration-300 p-lg flex flex-col h-[320px]">
+<div class="w-16 h-16 bg-primary/5 rounded-xl flex items-center justify-center mb-lg group-hover:scale-110 transition-transform duration-300">
+<span class="material-symbols-outlined text-primary text-4xl">school</span>
+</div>
+<h3 class="font-title-md text-title-md text-on-surface mb-md">Education</h3>
+<p class="font-body-md text-on-surface-variant flex-1">Interactive training modules and localized protocols for field staff updated in real-time.</p>
+<div class="mt-auto pt-lg">
+<span class="inline-flex items-center text-primary font-label-sm">Launch Tool <span class="material-symbols-outlined ml-xs text-sm">open_in_new</span></span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Features to Impact Section -->
+<section class="px-lg py-xxl bg-inverse-surface text-inverse-on-surface">
+<div class="max-w-container-max mx-auto">
+<div class="text-center mb-xxl">
+<span class="font-label-sm text-primary-fixed tracking-[0.2em] uppercase mb-md inline-block">Future Readiness</span>
+<h2 class="font-headline-lg text-headline-lg mb-lg">Features to Impact</h2>
+<p class="font-body-lg text-surface-variant/80 max-w-2xl mx-auto">Scaling healthcare intelligence through advanced modeling and automated coordination.</p>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-lg">
+<!-- Impact 1 -->
+<div class="dark-glass-card p-xl rounded-xl flex flex-col h-full hover:bg-white/5 transition-all">
+<div class="text-primary-fixed mb-xl">
+<span class="material-symbols-outlined text-5xl">inventory_2</span>
+</div>
+<h3 class="font-title-md text-title-md text-white mb-md">Supply Chain AI</h3>
+<p class="font-body-md text-surface-variant/70 mb-xl">Predictive inventory management that ensures critical medicines reach remote clinics before shortages occur.</p>
+<ul class="space-y-sm mt-auto">
+<li class="flex items-center gap-md text-label-sm text-surface-variant/60">
+<span class="material-symbols-outlined text-primary-fixed text-sm">check_circle</span>
+                                Zero-stock prediction
+                            </li>
+<li class="flex items-center gap-md text-label-sm text-surface-variant/60">
+<span class="material-symbols-outlined text-primary-fixed text-sm">check_circle</span>
+                                Cold-chain monitoring
+                            </li>
+</ul>
+</div>
+<!-- Impact 2 -->
+<div class="dark-glass-card p-xl rounded-xl flex flex-col h-full hover:bg-white/5 transition-all">
+<div class="text-primary-fixed mb-xl">
+<span class="material-symbols-outlined text-5xl">keyboard_voice</span>
+</div>
+<h3 class="font-title-md text-title-md text-white mb-md">Ambient Scribing</h3>
+<p class="font-body-md text-surface-variant/70 mb-xl">Multi-lingual voice AI that captures patient conversations and auto-populates health records with high accuracy.</p>
+<ul class="space-y-sm mt-auto">
+<li class="flex items-center gap-md text-label-sm text-surface-variant/60">
+<span class="material-symbols-outlined text-primary-fixed text-sm">check_circle</span>
+                                12+ Dialect Support
+                            </li>
+<li class="flex items-center gap-md text-label-sm text-surface-variant/60">
+<span class="material-symbols-outlined text-primary-fixed text-sm">check_circle</span>
+                                HIPAA-compliant processing
+                            </li>
+</ul>
+</div>
+<!-- Impact 3 -->
+<div class="dark-glass-card p-xl rounded-xl flex flex-col h-full hover:bg-white/5 transition-all">
+<div class="text-primary-fixed mb-xl">
+<span class="material-symbols-outlined text-5xl">personal_video</span>
+</div>
+<h3 class="font-title-md text-title-md text-white mb-md">Digital Twin</h3>
+<p class="font-body-md text-surface-variant/70 mb-xl">Simulated community health models to test intervention outcomes before physical implementation.</p>
+<ul class="space-y-sm mt-auto">
+<li class="flex items-center gap-md text-label-sm text-surface-variant/60">
+<span class="material-symbols-outlined text-primary-fixed text-sm">check_circle</span>
+                                Outbreak simulation
+                            </li>
+<li class="flex items-center gap-md text-label-sm text-surface-variant/60">
+<span class="material-symbols-outlined text-primary-fixed text-sm">check_circle</span>
+                                Resource allocation modeling
+                            </li>
+</ul>
+</div>
+</div>
+</div>
+</section>
+<!-- Footer -->
+<footer class="w-full py-xl px-lg flex flex-col md:flex-row justify-between items-center gap-md bg-surface-container-highest border-t border-outline-variant/20">
+<div class="flex flex-col items-center md:items-start gap-xs">
+<span class="font-title-md text-on-surface font-extrabold">ASHA AI</span>
+<p class="font-label-sm text-on-surface-variant/80">© 2024 ASHA AI Healthcare Solutions</p>
+</div>
+<div class="flex flex-wrap justify-center gap-lg">
+<a class="font-label-sm text-on-surface-variant/80 hover:text-primary transition-all opacity-80 hover:opacity-100" href="#">Privacy Policy</a>
+<a class="font-label-sm text-on-surface-variant/80 hover:text-primary transition-all opacity-80 hover:opacity-100" href="#">Terms of Service</a>
+<a class="font-label-sm text-on-surface-variant/80 hover:text-primary transition-all opacity-80 hover:opacity-100" href="#">Compliance</a>
+<a class="font-label-sm text-on-surface-variant/80 hover:text-primary transition-all opacity-80 hover:opacity-100" href="#">Contact Support</a>
+</div>
+</footer>
+</main>
+<!-- Floating Action Button -->
+<div class="fixed bottom-lg right-lg lg:right-xxl z-50">
+<button class="w-16 h-16 bg-primary text-on-primary rounded-full shadow-2xl flex items-center justify-center active:scale-95 transition-all hover:bg-primary-container group">
+<span class="material-symbols-outlined text-3xl group-hover:rotate-90 transition-transform">add</span>
+</button>
+</div>
+</body></html>

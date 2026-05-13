@@ -4,150 +4,171 @@ import Link from 'next/link'
 import PatientCard from '../../components/PatientCard'
 import { supabase } from '../../lib/supabase'
 import { getAllPatientsOffline, syncToSupabase } from '../../lib/offlineDB'
+import { Search, Plus, RefreshCw, Users, Filter, CloudOff, CheckCircle2, Loader2 } from 'lucide-react'
 
 export default function PatientsPage() {
-  const [patients, setPatients] = useState<any[]>([])
-  const [loading, setLoading] = useState(true)
-  const [search, setSearch] = useState('')
-  const [syncing, setSyncing] = useState(false)
-  const [syncMessage, setSyncMessage] = useState<string | null>(null)
-  const [isMounted, setIsMounted] = useState(false)
+  const [patients, setPatients]     = useState<any[]>([])
+  const [loading, setLoading]       = useState(true)
+  const [syncing, setSyncing]       = useState(false)
+  const [syncMsg, setSyncMsg]       = useState<string | null>(null)
+  const [query, setQuery]           = useState('')
+  const [isOnline, setIsOnline]     = useState(true)
 
   useEffect(() => {
-    setIsMounted(true)
-    loadPatients()
+    setIsOnline(navigator.onLine)
+    const on = () => setIsOnline(true)
+    const off = () => setIsOnline(false)
+    window.addEventListener('online', on)
+    window.addEventListener('offline', off)
+    return () => { window.removeEventListener('online', on); window.removeEventListener('offline', off) }
   }, [])
+
+  useEffect(() => { loadPatients() }, [])
 
   async function loadPatients() {
     setLoading(true)
     try {
-      if (typeof navigator !== 'undefined' && navigator.onLine) {
-        // Online: fetch from Supabase
-        const { data, error } = await supabase
-          .from('patients')
-          .select('*')
-          .order('created_at', { ascending: false })
-
-        if (error) throw error
-        setPatients(data || [])
-      } else {
-        // Offline: fetch from IndexedDB
-        const offlineData = await getAllPatientsOffline()
-        offlineData.sort((a: any, b: any) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime())
-        setPatients(offlineData)
+      if (isOnline) {
+        const { data } = await supabase.from('patients').select('*').order('created_at', { ascending: false })
+        if (data?.length) { setPatients(data); return }
       }
-    } catch (err) {
-      console.error('Failed to load patients:', err)
-    } finally {
-      setLoading(false)
-    }
+    } catch {}
+    try {
+      const offline = await getAllPatientsOffline()
+      setPatients(offline || [])
+    } catch { setPatients([]) }
+    finally { setLoading(false) }
   }
 
   async function handleSync() {
-    setSyncing(true)
-    setSyncMessage(null)
+    setSyncing(true); setSyncMsg(null)
     try {
-      const result = await syncToSupabase(supabase)
-      setSyncMessage(`Synced ${result.synced} patient(s). ${result.failed > 0 ? `${result.failed} failed.` : ''}`)
-      await loadPatients()
-    } catch (err) {
-      setSyncMessage('Sync failed. Please try again.')
+      await syncToSupabase()
+      setSyncMsg('Sync complete!')
+      loadPatients()
+    } catch {
+      setSyncMsg('Sync failed — check your connection.')
     } finally {
       setSyncing(false)
+      setTimeout(() => setSyncMsg(null), 3000)
     }
   }
 
-  const filtered = patients.filter((p) =>
-    p.name?.toLowerCase().includes(search.toLowerCase()) ||
-    p.village?.toLowerCase().includes(search.toLowerCase())
+  const filtered = patients.filter(p =>
+    !query ||
+    p.name?.toLowerCase().includes(query.toLowerCase()) ||
+    p.village?.toLowerCase().includes(query.toLowerCase()) ||
+    p.phone?.includes(query)
   )
 
+  const offline = patients.filter(p => p.synced === false).length
+
   return (
-    <div className="space-y-4">
+    <div className="space-y-6 animate-fade-in">
 
       {/* Header */}
-      <div className="flex items-center justify-between">
+      <div className="flex items-start justify-between">
         <div>
-          <h1 className="text-xl font-bold text-gray-900">Patients</h1>
-          <p className="text-sm text-gray-500">{patients.length} total records</p>
+          <div className="flex items-center gap-2 mb-0.5">
+            <Users size={16} className="text-emerald-600" />
+            <h1 className="text-lg font-bold text-slate-900">Patient Registry</h1>
+          </div>
+          <p className="text-xs text-slate-500">
+            {patients.length} patients · {isOnline ? (
+              <span className="text-emerald-600 font-medium">Online</span>
+            ) : (
+              <span className="text-amber-600 font-medium flex items-center gap-1 inline-flex"><CloudOff size={10} /> Offline mode</span>
+            )}
+          </p>
         </div>
-        <Link href="/patients/new" className="btn-primary">
-          + Add Patient
-        </Link>
-      </div>
-
-      {/* Search + Sync row */}
-      <div className="flex gap-2">
-        <input
-          type="text"
-          placeholder="Search by name or village..."
-          value={search}
-          onChange={(e: any) => setSearch(e.target.value)}
-          className="input-field flex-1"
-        />
-        {isMounted && navigator.onLine && (
-          <button
-            onClick={handleSync}
-            disabled={syncing}
-            className="btn-secondary flex-shrink-0"
-          >
-            {syncing ? 'Syncing...' : 'Sync'}
-          </button>
-        )}
+        <div className="flex items-center gap-2">
+          {offline > 0 && (
+            <button
+              onClick={handleSync}
+              disabled={syncing || !isOnline}
+              className="btn-sm btn-secondary gap-1.5"
+            >
+              {syncing ? <Loader2 size={12} className="animate-spin" /> : <RefreshCw size={12} />}
+              Sync {offline > 0 && `(${offline})`}
+            </button>
+          )}
+          <Link href="/patients/new" className="btn-md btn-primary">
+            <Plus size={14} /> New Patient
+          </Link>
+        </div>
       </div>
 
       {/* Sync message */}
-      {syncMessage && (
-        <div className="text-sm text-green-700 bg-green-50 border border-green-200 rounded-lg px-3 py-2">
-          {syncMessage}
+      {syncMsg && (
+        <div className={`flex items-center gap-2 px-4 py-3 rounded-xl text-sm font-medium animate-slide-up ${
+          syncMsg.includes('failed') ? 'bg-red-50 border border-red-200 text-red-700' : 'bg-emerald-50 border border-emerald-200 text-emerald-700'
+        }`}>
+          <CheckCircle2 size={15} />
+          {syncMsg}
         </div>
       )}
 
-      {/* Offline banner */}
-      {isMounted && !navigator.onLine && (
-        <div className="bg-amber-50 border border-amber-200 rounded-lg px-4 py-3 text-sm text-amber-700">
-          You are offline. Showing locally saved patients.
+      {/* Search + filter */}
+      <div className="flex gap-3">
+        <div className="relative flex-1">
+          <Search size={15} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
+          <input
+            type="search"
+            placeholder="Search by name, village, or phone..."
+            value={query}
+            onChange={e => setQuery(e.target.value)}
+            className="input pl-10"
+          />
         </div>
-      )}
+        <button className="btn-md btn-secondary gap-2">
+          <Filter size={14} /> Filter
+        </button>
+      </div>
 
-      {/* Patient list */}
+      {/* Stats strip */}
+      <div className="grid grid-cols-3 gap-3">
+        {[
+          { label: 'Total',   value: patients.length,               color: 'text-slate-900' },
+          { label: 'Offline', value: offline,                        color: offline > 0 ? 'text-amber-600' : 'text-slate-900' },
+          { label: 'Results', value: filtered.length,               color: 'text-emerald-600' },
+        ].map(s => (
+          <div key={s.label} className="card px-4 py-3 text-center">
+            <p className={`text-xl font-bold ${s.color}`}>{s.value}</p>
+            <p className="text-[11px] text-slate-400 font-medium">{s.label}</p>
+          </div>
+        ))}
+      </div>
+
+      {/* Patient grid */}
       {loading ? (
-        <div className="space-y-3">
-          {[1, 2, 3].map((i) => (
-            <div key={i} className="card animate-pulse">
-              <div className="flex gap-3">
-                <div className="w-10 h-10 bg-gray-200 rounded-full" />
-                <div className="flex-1 space-y-2 pt-1">
-                  <div className="h-3 bg-gray-200 rounded w-1/3" />
-                  <div className="h-2 bg-gray-100 rounded w-1/2" />
-                </div>
-              </div>
-            </div>
-          ))}
+        <div className="flex flex-col items-center justify-center py-20 gap-3 text-slate-400">
+          <Loader2 size={24} className="animate-spin" />
+          <p className="text-sm">Loading patients...</p>
         </div>
-      ) : filtered.length === 0 ? (
-        <div className="text-center py-16">
-          <div className="text-4xl mb-3">👥</div>
-          <h3 className="font-semibold text-gray-700">
-            {search ? 'No patients found' : 'No patients yet'}
-          </h3>
-          <p className="text-sm text-gray-500 mt-1">
-            {search ? 'Try a different search term' : 'Add your first patient to get started'}
-          </p>
-          {!search && (
-            <Link href="/patients/new" className="btn-primary inline-block mt-4">
-              Add First Patient
+      ) : filtered.length > 0 ? (
+        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4">
+          {filtered.map(p => <PatientCard key={p.id} patient={p} />)}
+        </div>
+      ) : (
+        <div className="flex flex-col items-center justify-center py-20 gap-3">
+          <div className="w-16 h-16 bg-slate-100 rounded-2xl flex items-center justify-center">
+            <Users size={28} className="text-slate-400" />
+          </div>
+          <div className="text-center">
+            <p className="text-sm font-semibold text-slate-700">
+              {query ? 'No patients match your search' : 'No patients yet'}
+            </p>
+            <p className="text-xs text-slate-400 mt-1">
+              {query ? 'Try a different name or village' : 'Register your first patient to get started'}
+            </p>
+          </div>
+          {!query && (
+            <Link href="/patients/new" className="btn-md btn-primary">
+              <Plus size={14} /> Register First Patient
             </Link>
           )}
         </div>
-      ) : (
-        <div className="space-y-3">
-          {filtered.map((patient) => (
-            <PatientCard key={patient.id} patient={patient} />
-          ))}
-        </div>
       )}
-
     </div>
   )
 }

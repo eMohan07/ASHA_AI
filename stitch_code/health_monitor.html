@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>ASHA AI - Health Monitor Workflow</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "primary-fixed-dim": "#68dba9",
+                        "surface-variant": "#e0e3e5",
+                        "surface-container-lowest": "#ffffff",
+                        "on-error": "#ffffff",
+                        "tertiary": "#ba0035",
+                        "secondary": "#565e74",
+                        "background": "#f7f9fb",
+                        "secondary-fixed-dim": "#bec6e0",
+                        "on-primary": "#ffffff",
+                        "tertiary-container": "#e21e49",
+                        "outline-variant": "#bccac0",
+                        "primary-fixed": "#85f8c4",
+                        "surface-container-high": "#e6e8ea",
+                        "secondary-container": "#dae2fd",
+                        "on-tertiary": "#ffffff",
+                        "on-tertiary-fixed": "#40000c",
+                        "inverse-on-surface": "#eff1f3",
+                        "on-surface": "#191c1e",
+                        "surface-container-highest": "#e0e3e5",
+                        "surface-container": "#eceef0",
+                        "outline": "#6d7a72",
+                        "error-container": "#ffdad6",
+                        "secondary-fixed": "#dae2fd",
+                        "tertiary-fixed": "#ffdada",
+                        "surface-dim": "#d8dadc",
+                        "on-secondary": "#ffffff",
+                        "on-primary-fixed": "#002114",
+                        "on-secondary-fixed": "#131b2e",
+                        "on-tertiary-fixed-variant": "#920028",
+                        "primary-container": "#00855d",
+                        "primary": "#006948",
+                        "surface-bright": "#f7f9fb",
+                        "inverse-surface": "#2d3133",
+                        "on-tertiary-container": "#fffbff",
+                        "on-primary-fixed-variant": "#005137",
+                        "on-secondary-fixed-variant": "#3f465c",
+                        "surface-tint": "#006c4a",
+                        "on-surface-variant": "#3d4a42",
+                        "error": "#ba1a1a",
+                        "on-secondary-container": "#5c647a",
+                        "surface": "#f7f9fb",
+                        "inverse-primary": "#68dba9",
+                        "on-error-container": "#93000a",
+                        "on-background": "#191c1e",
+                        "surface-container-low": "#f2f4f6",
+                        "tertiary-fixed-dim": "#ffb3b6",
+                        "on-primary-container": "#f5fff7"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "gutter": "24px",
+                        "container-max": "1280px",
+                        "xxl": "64px",
+                        "xl": "40px",
+                        "sm": "8px",
+                        "xs": "4px",
+                        "lg": "24px",
+                        "md": "16px",
+                        "unit": "4px"
+                    },
+                    "fontFamily": {
+                        "body-md": ["Plus Jakarta Sans"],
+                        "label-sm": ["Plus Jakarta Sans"],
+                        "display-lg": ["Plus Jakarta Sans"],
+                        "title-md": ["Plus Jakarta Sans"],
+                        "headline-lg": ["Plus Jakarta Sans"],
+                        "body-lg": ["Plus Jakarta Sans"],
+                        "headline-lg-mobile": ["Plus Jakarta Sans"]
+                    },
+                    "fontSize": {
+                        "body-md": ["16px", {"lineHeight": "1.6", "letterSpacing": "0", "fontWeight": "400"}],
+                        "label-sm": ["14px", {"lineHeight": "1.2", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                        "display-lg": ["48px", {"lineHeight": "1.1", "letterSpacing": "0.02em", "fontWeight": "700"}],
+                        "title-md": ["20px", {"lineHeight": "1.4", "letterSpacing": "0.01em", "fontWeight": "600"}],
+                        "headline-lg": ["32px", {"lineHeight": "1.2", "letterSpacing": "0.01em", "fontWeight": "600"}],
+                        "body-lg": ["18px", {"lineHeight": "1.6", "letterSpacing": "0", "fontWeight": "400"}],
+                        "headline-lg-mobile": ["24px", {"lineHeight": "1.2", "letterSpacing": "0.01em", "fontWeight": "600"}]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .glass-card {
+            background: rgba(255, 255, 255, 0.75);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(109, 122, 114, 0.1);
+        }
+        .ai-insight-border {
+            position: relative;
+            border: 1px solid transparent;
+            background: linear-gradient(white, white) padding-box,
+                        linear-gradient(to right, #006948, #68dba9) border-box;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+    </style>
+</head>
+<body class="bg-surface font-body-md text-on-surface">
+<!-- TopNavBar -->
+<header class="fixed top-0 w-full z-50 flex justify-between items-center px-lg h-16 bg-surface/80 backdrop-blur-md border-b border-outline-variant/10 shadow-sm">
+<div class="flex items-center gap-md">
+<span class="text-title-md font-title-md font-bold text-primary">ASHA AI</span>
+<nav class="hidden md:flex gap-lg ml-xl">
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors" href="#">Home</a>
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors" href="#">Patients</a>
+<a class="font-body-md text-body-md text-primary border-b-2 border-primary pb-1" href="#">Symptom AI</a>
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors" href="#">Alerts</a>
+</nav>
+</div>
+<div class="flex items-center gap-md">
+<button class="p-sm text-on-surface-variant hover:text-primary transition-all active:scale-95">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+</button>
+<button class="p-sm text-on-surface-variant hover:text-primary transition-all active:scale-95">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+</button>
+<div class="w-10 h-10 rounded-full overflow-hidden border border-outline-variant/20">
+<img alt="Worker Profile" class="w-full h-full object-cover" data-alt="A professional headshot of a female healthcare worker in modern medical attire. She is smiling confidently against a soft, neutral-toned hospital background. The lighting is bright and airy, maintaining a high-fidelity light-mode aesthetic that fits a premium healthcare application." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB0lwFv8VKZuyCT7vkrN_7QCpw-YrBoFZWM7TkpHi128ufQtzJdsEoMCWU7FyQF-CrMiJABRY0GDlPmOzmFZZQE_WiqmZg3EULvEzeEGPjcNnmKPcJtQfd4q61VRfGXcn4MLlHIbhJFkVP4GWiFWbqn6PBdq4qO4xDzLtwQEZex3pJg0K9Pqr2vMEJqWOd8nZkL9Dmw_zZ1JT390BeObcHICsilUZBEzTW5xMCFsWccpKhvvcaD4rDjiutmPEVcp8J0tzah1xM3fvQ"/>
+</div>
+</div>
+</header>
+<!-- Sidebar Layout Container -->
+<div class="flex pt-16 min-h-screen">
+<!-- SideNavBar -->
+<aside class="hidden lg:flex flex-col fixed left-0 top-16 h-[calc(100vh-64px)] p-md w-64 bg-surface-container-low/70 backdrop-blur-xl border-r border-outline-variant/10">
+<div class="mb-xl px-sm">
+<h2 class="font-title-md text-primary font-bold">Frontline Portal</h2>
+<p class="text-label-sm text-on-surface-variant">Regional Sector A</p>
+</div>
+<nav class="flex-1 flex flex-col gap-xs">
+<a class="flex items-center gap-md p-md rounded-lg text-on-surface-variant hover:bg-surface-variant/50 transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span class="font-label-sm">Dashboard</span>
+</a>
+<a class="flex items-center gap-md p-md rounded-lg bg-primary-container text-on-primary-container transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="health_and_safety">health_and_safety</span>
+<span class="font-label-sm">Diagnostic Tools</span>
+</a>
+<a class="flex items-center gap-md p-md rounded-lg text-on-surface-variant hover:bg-surface-variant/50 transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="personal_injury">personal_injury</span>
+<span class="font-label-sm">Patient Records</span>
+</a>
+<a class="flex items-center gap-md p-md rounded-lg text-on-surface-variant hover:bg-surface-variant/50 transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="calendar_today">calendar_today</span>
+<span class="font-label-sm">Shift Schedule</span>
+</a>
+<a class="flex items-center gap-md p-md rounded-lg text-on-surface-variant hover:bg-surface-variant/50 transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="map">map</span>
+<span class="font-label-sm">Resource Map</span>
+</a>
+</nav>
+<button class="mt-md mb-xl w-full bg-error text-on-error py-md rounded-xl font-label-sm flex items-center justify-center gap-sm shadow-md active:scale-95 transition-all">
+<span class="material-symbols-outlined" data-icon="emergency_home">emergency_home</span>
+                Emergency Protocol
+            </button>
+<div class="mt-auto flex flex-col gap-xs border-t border-outline-variant/10 pt-md">
+<a class="flex items-center gap-md p-md rounded-lg text-on-surface-variant hover:bg-surface-variant/50 transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="help">help</span>
+<span class="font-label-sm">Support</span>
+</a>
+<a class="flex items-center gap-md p-md rounded-lg text-on-surface-variant hover:bg-surface-variant/50 transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+<span class="font-label-sm">Settings</span>
+</a>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="flex-1 lg:ml-64 p-lg md:p-xl bg-surface">
+<div class="max-w-container-max mx-auto">
+<!-- Workflow Header -->
+<div class="mb-xl">
+<div class="flex items-center gap-sm text-primary mb-sm">
+<span class="material-symbols-outlined" data-icon="arrow_back">arrow_back</span>
+<span class="font-label-sm">HEALTH MONITOR WORKFLOW</span>
+</div>
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-md">
+<div>
+<h1 class="font-headline-lg text-headline-lg text-on-surface">Step 1: Record Food Intake</h1>
+<p class="text-body-lg text-on-surface-variant max-w-2xl">Help your AI assistant understand your nutritional patterns by logging your most recent meal.</p>
+</div>
+<div class="flex gap-xs">
+<div class="h-2 w-12 rounded-full bg-primary"></div>
+<div class="h-2 w-12 rounded-full bg-outline-variant/30"></div>
+<div class="h-2 w-12 rounded-full bg-outline-variant/30"></div>
+</div>
+</div>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-lg">
+<!-- Form Section -->
+<div class="lg:col-span-8 flex flex-col gap-lg">
+<!-- Input Card -->
+<section class="glass-card rounded-xl p-xl shadow-sm">
+<div class="grid grid-cols-1 md:grid-cols-2 gap-lg mb-lg">
+<div class="flex flex-col gap-sm">
+<label class="font-label-sm text-on-surface-variant">Meal Type</label>
+<div class="relative">
+<select class="w-full bg-surface-container-low border border-outline-variant/30 rounded-lg p-md pr-xl appearance-none focus:ring-2 focus:ring-primary focus:border-primary transition-all outline-none">
+<option>Breakfast</option>
+<option>Lunch</option>
+<option>Dinner</option>
+<option>Snack</option>
+</select>
+<span class="material-symbols-outlined absolute right-md top-1/2 -translate-y-1/2 pointer-events-none text-on-surface-variant">expand_more</span>
+</div>
+</div>
+<div class="flex flex-col gap-sm">
+<label class="font-label-sm text-on-surface-variant">Food Item</label>
+<input class="w-full bg-surface-container-low border border-outline-variant/30 rounded-lg p-md focus:ring-2 focus:ring-primary focus:border-primary transition-all outline-none" placeholder="e.g. Avocado Toast" type="text"/>
+</div>
+<div class="flex flex-col gap-sm">
+<label class="font-label-sm text-on-surface-variant">Portion Size</label>
+<input class="w-full bg-surface-container-low border border-outline-variant/30 rounded-lg p-md focus:ring-2 focus:ring-primary focus:border-primary transition-all outline-none" placeholder="e.g. 1 Medium Slice" type="text"/>
+</div>
+<div class="flex flex-end items-end">
+<button class="w-full h-[48px] bg-primary text-on-primary rounded-xl font-title-md flex items-center justify-center gap-sm hover:opacity-90 active:scale-95 transition-all shadow-md">
+<span class="material-symbols-outlined" data-icon="add">add</span>
+                                        Add to Log
+                                    </button>
+</div>
+</div>
+</section>
+<!-- Log Section -->
+<section class="glass-card rounded-xl overflow-hidden shadow-sm">
+<div class="p-lg bg-surface-container-highest/30 flex justify-between items-center border-b border-outline-variant/10">
+<h3 class="font-title-md text-on-surface">Today's Log</h3>
+<span class="text-label-sm text-on-surface-variant">3 Items Recorded</span>
+</div>
+<div class="flex flex-col divide-y divide-outline-variant/10">
+<!-- Log Item 1 -->
+<div class="p-lg flex items-center justify-between hover:bg-surface-container-low transition-colors">
+<div class="flex items-center gap-md">
+<div class="w-12 h-12 rounded-xl bg-secondary-container flex items-center justify-center text-on-secondary-container">
+<span class="material-symbols-outlined" data-icon="restaurant">restaurant</span>
+</div>
+<div>
+<p class="font-title-md text-on-surface">Greek Yogurt Bowl</p>
+<p class="text-body-md text-on-surface-variant">Breakfast • 250g • 340 kcal</p>
+</div>
+</div>
+<button class="p-sm text-on-surface-variant hover:text-error transition-colors">
+<span class="material-symbols-outlined" data-icon="delete">delete</span>
+</button>
+</div>
+<!-- Log Item 2 -->
+<div class="p-lg flex items-center justify-between hover:bg-surface-container-low transition-colors">
+<div class="flex items-center gap-md">
+<div class="w-12 h-12 rounded-xl bg-primary-fixed/30 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined" data-icon="coffee">coffee</span>
+</div>
+<div>
+<p class="font-title-md text-on-surface">Oat Milk Latte</p>
+<p class="text-body-md text-on-surface-variant">Morning Snack • 12oz • 120 kcal</p>
+</div>
+</div>
+<button class="p-sm text-on-surface-variant hover:text-error transition-colors">
+<span class="material-symbols-outlined" data-icon="delete">delete</span>
+</button>
+</div>
+<!-- Log Item 3 -->
+<div class="p-lg flex items-center justify-between hover:bg-surface-container-low transition-colors">
+<div class="flex items-center gap-md">
+<div class="w-12 h-12 rounded-xl bg-tertiary-fixed/30 flex items-center justify-center text-tertiary">
+<span class="material-symbols-outlined" data-icon="lunch_dining">lunch_dining</span>
+</div>
+<div>
+<p class="font-title-md text-on-surface">Grilled Chicken Salad</p>
+<p class="text-body-md text-on-surface-variant">Lunch • 1 bowl • 450 kcal</p>
+</div>
+</div>
+<button class="p-sm text-on-surface-variant hover:text-error transition-colors">
+<span class="material-symbols-outlined" data-icon="delete">delete</span>
+</button>
+</div>
+</div>
+</section>
+<div class="flex justify-end mt-lg">
+<button class="px-xxl h-[48px] bg-primary text-on-primary rounded-xl font-title-md flex items-center justify-center gap-sm hover:opacity-95 active:scale-95 transition-all shadow-lg ring-4 ring-primary-fixed/20">
+                                Next Step
+                                <span class="material-symbols-outlined" data-icon="arrow_forward">arrow_forward</span>
+</button>
+</div>
+</div>
+<!-- Sidebar Widgets -->
+<div class="lg:col-span-4 flex flex-col gap-lg">
+<!-- Nutrition Goal Widget -->
+<div class="glass-card rounded-xl p-lg shadow-sm">
+<div class="flex items-center gap-sm mb-md">
+<span class="material-symbols-outlined text-primary" data-icon="bolt">bolt</span>
+<h4 class="font-label-sm text-on-surface">Nutrition Goal</h4>
+</div>
+<div class="flex justify-between items-end mb-sm">
+<span class="text-headline-lg font-headline-lg text-on-surface">1,240 <span class="text-body-md font-normal text-on-surface-variant">/ 2,100 kcal</span></span>
+<span class="text-label-sm text-primary">59%</span>
+</div>
+<div class="w-full h-2 bg-surface-container-highest rounded-full overflow-hidden">
+<div class="h-full bg-primary w-[59%]"></div>
+</div>
+<div class="grid grid-cols-3 gap-sm mt-lg">
+<div class="text-center">
+<p class="text-label-sm text-on-surface-variant">Protein</p>
+<p class="font-title-md text-on-surface">45g</p>
+</div>
+<div class="text-center">
+<p class="text-label-sm text-on-surface-variant">Carbs</p>
+<p class="font-title-md text-on-surface">112g</p>
+</div>
+<div class="text-center">
+<p class="text-label-sm text-on-surface-variant">Fats</p>
+<p class="font-title-md text-on-surface">28g</p>
+</div>
+</div>
+</div>
+<!-- Hydration Status Widget -->
+<div class="glass-card rounded-xl p-lg shadow-sm">
+<div class="flex items-center justify-between mb-md">
+<div class="flex items-center gap-sm">
+<span class="material-symbols-outlined text-blue-500" data-icon="water_drop">water_drop</span>
+<h4 class="font-label-sm text-on-surface">Hydration</h4>
+</div>
+<button class="text-primary hover:bg-primary/5 p-xs rounded-lg transition-colors">
+<span class="material-symbols-outlined" data-icon="add_circle">add_circle</span>
+</button>
+</div>
+<div class="flex items-center gap-md">
+<div class="flex -space-x-1">
+<span class="material-symbols-outlined text-blue-500" data-icon="water_full" data-weight="fill" style="font-variation-settings: 'FILL' 1;">water_full</span>
+<span class="material-symbols-outlined text-blue-500" data-icon="water_full" data-weight="fill" style="font-variation-settings: 'FILL' 1;">water_full</span>
+<span class="material-symbols-outlined text-blue-500" data-icon="water_full" data-weight="fill" style="font-variation-settings: 'FILL' 1;">water_full</span>
+<span class="material-symbols-outlined text-blue-500" data-icon="water_full" data-weight="fill" style="font-variation-settings: 'FILL' 1;">water_full</span>
+<span class="material-symbols-outlined text-outline-variant/30" data-icon="water_full">water_full</span>
+<span class="material-symbols-outlined text-outline-variant/30" data-icon="water_full">water_full</span>
+</div>
+<span class="font-title-md text-on-surface">1.2L <span class="text-body-md text-on-surface-variant">/ 2L</span></span>
+</div>
+</div>
+<!-- AI Analysis Status (Custom Component) -->
+<div class="ai-insight-border rounded-xl p-lg shadow-sm overflow-hidden">
+<div class="flex items-center gap-sm mb-md">
+<span class="material-symbols-outlined text-primary" data-icon="psychology">psychology</span>
+<h4 class="font-label-sm text-on-surface">AI Analysis Status</h4>
+</div>
+<div class="flex items-center gap-md bg-primary-container/10 p-md rounded-lg">
+<div class="relative">
+<div class="w-10 h-10 rounded-full border-2 border-primary border-t-transparent animate-spin"></div>
+<span class="material-symbols-outlined absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-primary" data-icon="auto_awesome">auto_awesome</span>
+</div>
+<div>
+<p class="text-label-sm text-on-surface font-bold">Scanning Micro-nutrients</p>
+<p class="text-xs text-on-surface-variant">Generating personalized health insights based on today's intake...</p>
+</div>
+</div>
+<div class="mt-md">
+<div class="flex justify-between items-center px-sm">
+<span class="text-xs text-on-surface-variant">Processing Queue</span>
+<span class="text-xs text-primary font-bold">LIVE</span>
+</div>
+</div>
+</div>
+<!-- Image Context -->
+<div class="rounded-xl overflow-hidden aspect-video relative group">
+<img alt="Fresh Healthy Food" class="w-full h-full object-cover" data-alt="A vibrant, high-key photograph of a gourmet healthy meal featuring fresh avocado, grilled salmon, and bright green vegetables. The food is beautifully plated on a minimalist ceramic dish, set against a clean white marble countertop. The lighting is soft and natural, emphasizing textures and vibrant colors while maintaining a sophisticated, healthcare-focused aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuABdO6hG5Pr8Jm7KaueSkFoToHZEvA59aZogK5e-TtSDbOgdowntuVo1NMFVw4m2NJatMDMlj6FCE_RHs4wQsTXEY7FhoWA3EZF0naOgP-vfAOltuF6gLya5dUo-vVuxDm4VKLXS02uAjbC6Yfdx7zggKyOpzbNwNl5FShfG3o-NrHHDVYFLYPuxne91FVO55aSG4xVI0g42M2HddqxvxvlVUbMwSPIWc0G9SwcqmxtxxA_mKTLbEsbvCwsiDjWikmZm1aBYdu4t88"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex flex-col justify-end p-lg">
+<p class="text-on-primary font-title-md">Healthy Choices</p>
+<p class="text-on-primary/80 text-body-md">Your diet today is 15% better than last week.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+<!-- Footer -->
+<footer class="w-full py-xl px-lg flex flex-col md:flex-row justify-between items-center gap-md bg-surface-container-highest border-t border-outline-variant/20">
+<div>
+<span class="font-title-md text-on-surface font-bold">ASHA AI</span>
+<p class="text-label-sm text-on-surface-variant/80 mt-xs">© 2024 ASHA AI Healthcare Solutions</p>
+</div>
+<div class="flex gap-lg">
+<a class="text-label-sm text-on-surface-variant/80 hover:text-primary transition-colors" href="#">Privacy Policy</a>
+<a class="text-label-sm text-on-surface-variant/80 hover:text-primary transition-colors" href="#">Terms of Service</a>
+<a class="text-label-sm text-on-surface-variant/80 hover:text-primary transition-colors" href="#">Compliance</a>
+<a class="text-label-sm text-on-surface-variant/80 hover:text-primary transition-colors" href="#">Contact Support</a>
+</div>
+</footer>
+</body></html>
