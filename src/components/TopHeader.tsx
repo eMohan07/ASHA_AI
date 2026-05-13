@@ -1,4 +1,6 @@
 import { Search, Bell, History } from 'lucide-react'
+import AuthNav from './AuthNav'
+import NotificationPopover from './NotificationPopover'
 
 export default function TopHeader() {
   return (
@@ -13,27 +15,16 @@ export default function TopHeader() {
           />
         </div>
       </div>
-      <div className="flex items-center gap-6">
-        <button className="bg-[#a03d31] hover:bg-[#863127] text-white text-sm font-medium px-4 py-2 rounded-full transition-colors flex items-center gap-2">
-          Register Patient
-        </button>
-        <div className="flex items-center gap-4 border-r border-slate-200 pr-6">
-          <button className="text-slate-500 hover:text-slate-800 transition-colors">
-            <Bell size={20} />
-          </button>
+      <div className="flex items-center gap-4">
+        <div className="flex items-center gap-4 border-r border-slate-200 pr-4">
+          <NotificationPopover />
           <button className="text-slate-500 hover:text-slate-800 transition-colors">
             <History size={20} />
           </button>
         </div>
-        <div className="flex items-center gap-3">
-          <div className="w-9 h-9 rounded-full bg-slate-200 overflow-hidden">
-            <img src="https://i.pravatar.cc/150?u=a042581f4e29026704d" alt="Dr. Aris Thorne" className="w-full h-full object-cover" />
-          </div>
-          <div>
-            <p className="text-sm font-semibold text-slate-900 leading-tight">Dr. Aris Thorne</p>
-            <p className="text-[10px] font-semibold text-slate-500 uppercase tracking-wide">Field Surgeon</p>
-          </div>
-        </div>
+        
+        {/* Auth Section */}
+        <AuthNav />
       </div>
     </header>
   )

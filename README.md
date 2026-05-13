@@ -1,67 +1,87 @@
-# ASHA AI - Frontline Health Assistant
+# CareLink Pro — Field Unit 04 🏥
 
-ASHA AI is an offline-first, AI-powered web application designed specifically for rural frontline health workers (ASHAs). It assists workers in managing patient records, performing intelligent symptom triage, and sending immediate critical alerts to doctors via WhatsApp.
+**CareLink Pro** (formerly ASHA AI) is a premium, offline-first clinical decision support platform designed specifically for frontline community health workers and doctors in rural and semi-urban environments. It transforms raw field observations into structured clinical intelligence, enabling rapid triage and emergency referral even in the most remote areas.
 
-Built for the 2025 Hackathon, this tool operates flawlessly even in low-connectivity rural environments.
+---
 
 ## 🚀 Key Features
 
-* **Offline-First Architecture**: Built with IndexedDB. Add, view, and manage patients completely offline. Data automatically syncs to the cloud when an internet connection is restored.
-* **AI Symptom Triage**: Powered by **Google Gemini 2.5 Flash**, the AI analyzes patient symptoms (in English, Hindi, or Tamil) and categorizes severity (Low, Medium, High, Critical), providing immediate medical next steps.
-* **WhatsApp Doctor Alerts**: Seamlessly integrated with **Twilio**. Health workers can instantly forward critical patient data and AI assessments to a doctor's WhatsApp number with a single click.
-* **Mobile-Optimized UI**: Fast, responsive, and intuitive interface designed for low-end smartphones used in the field.
+### 🧠 Intelligent Symptom AI (Fatality-Aware)
+Powered by **Google Gemini 2.5 Flash**, our advanced triage engine classifies conditions by both **Severity** and **Fatality Risk**.
+* **Real-time Assessment**: Processes symptoms in natural language (English, Hindi, Tamil).
+* **Fatality Monitoring**: Categorizes cases as `FATAL`, `POTENTIALLY FATAL`, or `NON-FATAL` with clear plain-language explanations.
+* **Clinical Roadmap**: Provides possible conditions, warning signs, and actionable next steps for frontline workers.
+
+### 📶 Offline-First Infrastructure
+Designed for "zero-connectivity" zones using **IndexedDB**.
+* **Local Persistence**: Add patients and record vitals completely offline.
+* **Intelligent Sync**: One-touch background synchronization to **Supabase (PostgreSQL)** when back in network range.
+* **Field Roster**: Full access to patient history without a Wi-Fi or Cellular requirement.
+
+### 🌐 Digital Twin & Analytics
+Advanced deep-data analytics for population health monitoring.
+* **Population Wellness Trends**: Interactive dashboard with weekly/monthly toggles for trend visualization.
+* **Risk Heatmaps**: Visualizes critical cases and triage efficiency across sector units.
+
+### 🔐 Professional Identity & Security
+Full-featured authentication system for clinical personnel.
+* **Secure Enrollment**: Multi-step signup with email verification.
+* **Clinical Profiles**: Management of professional credentials, security updates, and access logs.
+* **Access Control**: Secure session management via Supabase Auth.
+
+---
 
 ## 🛠️ Tech Stack
 
-* **Frontend**: Next.js 14, React, Tailwind CSS
-* **Backend**: Next.js API Routes
-* **Database**: Supabase (PostgreSQL) + IndexedDB (`idb` for offline storage)
-* **AI Engine**: Vercel AI SDK + Google Gemini API
-* **Notifications**: Twilio REST API
+* **Core**: [Next.js 14](https://nextjs.org/) (App Router), React 18, TypeScript
+* **Styling**: Tailwind CSS (CareLink Pro "Navy & Slate" Design System)
+* **Intelligence**: [Google Gemini 2.5 Flash](https://aistudio.google.com/) via Vercel AI SDK
+* **Persistence**: [Supabase](https://supabase.com/) (Cloud) + [IndexedDB](https://developer.mozilla.org/en-US/docs/Web/API/IndexedDB_API) (Local Cache)
+* **Icons**: Lucide React
 
-## ⚙️ Local Setup & Installation
+---
 
-### 1. Clone the Repository
-```bash
-git clone https://github.com/eMohan07/ASHA_AI.git
-cd ASHA_AI
-```
+## ⚙️ Deployment & Setup
 
-### 2. Install Dependencies
-```bash
-npm install
-```
-
-### 3. Environment Variables
-Create a `.env.local` file in the root directory and add the following keys. (You will need to create free accounts on Supabase, Google AI Studio, and Twilio to get these keys).
+### 1. Environment Configuration
+Create a `.env` file in the root directory:
 
 ```env
-# Google Gemini (AI Triage)
-GOOGLE_GENERATIVE_AI_API_KEY="your_google_gemini_api_key"
+# AI Intelligence (Google Gemini)
+GOOGLE_GENERATIVE_AI_API_KEY="your_api_key"
 
-# Supabase (Cloud Database)
-NEXT_PUBLIC_SUPABASE_URL="your_supabase_project_url"
-NEXT_PUBLIC_SUPABASE_ANON_KEY="your_supabase_anon_key"
+# Clinical Datastore (Supabase)
+NEXT_PUBLIC_SUPABASE_URL="your_url"
+NEXT_PUBLIC_SUPABASE_ANON_KEY="your_key"
 
-# Twilio (WhatsApp Alerts Sandbox)
-TWILIO_ACCOUNT_SID="your_twilio_account_sid"
-TWILIO_AUTH_TOKEN="your_twilio_auth_token"
-TWILIO_WHATSAPP_FROM="whatsapp:+14155238886" # Your Twilio Sandbox Number
+# Service Credentials (OTP & Notifications)
+GMAIL_USER="your_email@gmail.com"
+GMAIL_PASS="your_app_password"
 ```
 
-### 4. Run the Development Server
+### 2. Initialization
 ```bash
+npm install
 npm run dev
 ```
-Open [http://localhost:3000](http://localhost:3000) in your browser to view the application.
 
-## 📱 How to Use
+### 3. Build for Production
+```bash
+npm run build
+```
 
-1. **Dashboard / Patients**: View your list of patients. Notice the "Sync" button at the top—if you add patients while offline, click this when you get back online to push records to Supabase.
-2. **Add a Patient**: Click "+ Add Patient" to register a new person. This works instantly even without Wi-Fi.
-3. **AI Symptom Checker**: Go to a patient's profile and click "Symptom Check". Describe their symptoms (e.g., "Fever for 3 days and severe headache"). The AI will assess the risk level.
-4. **Send WhatsApp Alert**: If the AI determines a High or Critical risk, a red alert banner will appear. Enter the PHC doctor's phone number to send an automated WhatsApp message containing the patient's vitals and AI assessment.
-5. **Quick Notifications**: Hover over "Notifications" in the top navigation bar from anywhere in the app to send a manual WhatsApp alert to any doctor.
+---
 
-## 🤝 Contributing
-Contributions are welcome! Please fork the repository and submit a pull request for any enhancements.
+## 📱 Clinical Workflow
+
+1. **Patient Enrollment**: Register patients in the field (online or offline).
+2. **Symptom Triage**: Enter observations into **Symptom AI**. Review the red/orange/green fatality banners for immediate risk assessment.
+3. **Deep Data Review**: Navigate to the **Digital Twin** tab to analyze sector-wide wellness trends and efficiency metrics.
+4. **Data Sync**: Tap "Sync Offline Data" in the Patient Registry when a network connection is established to secure field records to the cloud.
+
+---
+
+## 🤝 Clinical Contributions
+Developed for the **2025 Health-Tech Hackathon**. CareLink Pro aims to bridge the gap between rural frontline care and modern clinical intelligence.
+
+**CareLink Pro · Bridging the Last Mile of Clinical Intelligence.**

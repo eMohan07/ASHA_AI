@@ -5,12 +5,11 @@ import { createClient } from '@supabase/supabase-js'
 const JWT_SECRET = process.env.JWT_SECRET || 'asha-ai-reset-secret-2025'
 
 // Admin client with service role for password reset
-const supabaseAdmin = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.SUPABASE_SERVICE_ROLE_KEY!
-)
-
 export async function POST(req: NextRequest) {
+  const supabaseAdmin = createClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.SUPABASE_SERVICE_ROLE_KEY || 'dummy_key'
+  )
   try {
     const { token, otp, newPassword, name } = await req.json()
     if (!token || !otp) return NextResponse.json({ error: 'Token and OTP required' }, { status: 400 })
