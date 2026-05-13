@@ -1,9 +1,24 @@
 "use client"
 
-import { useChat } from "ai/react"
+import { useChat } from "@ai-sdk/react"
+import { useState } from "react"
 
 export function ChatInterface() {
-  const { messages, input, handleInputChange, handleSubmit, isLoading } = useChat()
+  const { messages, sendMessage, status } = useChat()
+  const [input, setInput] = useState("")
+
+  const isLoading = status === 'submitted' || status === 'streaming'
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setInput(e.target.value)
+  }
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault()
+    if (!input.trim() || isLoading) return
+    sendMessage({ text: input, messageId: Date.now().toString() })
+    setInput("")
+  }
 
   return (
     <div className="flex flex-col h-full bg-slate-950/50">
@@ -17,7 +32,9 @@ export function ChatInterface() {
           messages.map(m => (
             <div key={m.id} className={`flex ${m.role === 'user' ? 'justify-end' : 'justify-start'}`}>
               <div className={`max-w-[80%] rounded-2xl p-4 ${m.role === 'user' ? 'bg-indigo-600 text-white' : 'bg-slate-800 text-slate-200 border border-slate-700 shadow-md'}`}>
-                {m.content}
+                {m.parts?.filter(p => p.type === 'text').map((p, i) => (
+                  <span key={i}>{'text' in p ? p.text : ''}</span>
+                ))}
               </div>
             </div>
           ))
