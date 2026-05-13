@@ -5,8 +5,8 @@ import NotificationPopover from '../components/NotificationPopover'
 import AuthNav from '../components/AuthNav'
 
 export const metadata: Metadata = {
-  title: 'ASHA AI — Frontline Health Intelligence',
-  description: 'AI-powered clinical tools for frontline community health workers across rural India',
+  title: 'CareLink Pro — Field Unit 04',
+  description: 'Clinical overview and patient management system',
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

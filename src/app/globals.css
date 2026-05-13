@@ -26,7 +26,7 @@
   .btn-md   { @apply btn px-4 py-2 text-sm; }
   .btn-lg   { @apply btn px-5 py-2.5 text-sm; }
 
-  .btn-primary   { @apply bg-emerald-600 text-white hover:bg-emerald-700 shadow-sm; }
+  .btn-primary   { @apply bg-blue-600 text-white hover:bg-blue-700 shadow-sm; }
   .btn-secondary { @apply bg-white text-slate-700 border border-slate-200 hover:bg-slate-50 shadow-sm; }
   .btn-ghost     { @apply text-slate-600 hover:bg-slate-100 hover:text-slate-900; }
   .btn-danger    { @apply bg-red-600 text-white hover:bg-red-700 shadow-sm; }
@@ -42,8 +42,8 @@
   /* Inputs */
   .input {
     @apply w-full px-3.5 py-2.5 bg-white border border-slate-200 rounded-xl text-sm text-slate-900 
-           placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-emerald-500/30 
-           focus:border-emerald-400 transition-all;
+           placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500/30 
+           focus:border-blue-400 transition-all;
   }
   .label { @apply block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2; }
 
@@ -51,7 +51,7 @@
   .badge {
     @apply inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-semibold;
   }
-  .badge-green  { @apply badge bg-emerald-50 text-emerald-700 ring-1 ring-emerald-200/60; }
+  .badge-green  { @apply badge bg-blue-50 text-blue-700 ring-1 ring-blue-200/60; }
   .badge-amber  { @apply badge bg-amber-50  text-amber-700  ring-1 ring-amber-200/60; }
   .badge-orange { @apply badge bg-orange-50 text-orange-700 ring-1 ring-orange-200/60; }
   .badge-red    { @apply badge bg-red-50    text-red-700    ring-1 ring-red-200/60; }
@@ -81,7 +81,7 @@
 }
 
 @layer utilities {
-  .gradient-emerald {
+  .gradient-blue {
     background: linear-gradient(135deg, #059669 0%, #047857 100%);
   }
   .gradient-slate {
@@ -91,7 +91,7 @@
     @apply bg-clip-text text-transparent;
     background-image: linear-gradient(135deg, #10b981, #0ea5e9);
   }
-  .glow-emerald {
+  .glow-blue {
     box-shadow: 0 0 20px rgba(16,185,129,0.15);
   }
 }

@@ -94,7 +94,7 @@ export default function PatientForm({ existingPatient = null }: { existingPatien
 
       {/* Name */}
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">
+        <label className="block text-sm font-medium text-slate-700 mb-1">
           Full Name <span className="text-red-500">*</span>
         </label>
         <input
@@ -103,7 +103,7 @@ export default function PatientForm({ existingPatient = null }: { existingPatien
           value={form.name}
           onChange={handleChange}
           placeholder="e.g. Meena Devi"
-          className="input-field"
+          className="input"
           required
         />
       </div>
@@ -111,7 +111,7 @@ export default function PatientForm({ existingPatient = null }: { existingPatien
       {/* Age + Gender row */}
       <div className="grid grid-cols-2 gap-3">
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Age</label>
+          <label className="block text-sm font-medium text-slate-700 mb-1">Age</label>
           <input
             type="number"
             name="age"
@@ -120,12 +120,12 @@ export default function PatientForm({ existingPatient = null }: { existingPatien
             placeholder="e.g. 34"
             min="0"
             max="120"
-            className="input-field"
+            className="input"
           />
         </div>
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Gender</label>
-          <select name="gender" value={form.gender} onChange={handleChange} className="input-field">
+          <label className="block text-sm font-medium text-slate-700 mb-1">Gender</label>
+          <select name="gender" value={form.gender} onChange={handleChange} className="input">
             <option value="">Select</option>
             <option value="female">Female</option>
             <option value="male">Male</option>
@@ -136,33 +136,33 @@ export default function PatientForm({ existingPatient = null }: { existingPatien
 
       {/* Village */}
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">Village / Area</label>
+        <label className="block text-sm font-medium text-slate-700 mb-1">Village / Area</label>
         <input
           type="text"
           name="village"
           value={form.village}
           onChange={handleChange}
           placeholder="e.g. Keezhambur"
-          className="input-field"
+          className="input"
         />
       </div>
 
       {/* Phone */}
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">Phone Number</label>
+        <label className="block text-sm font-medium text-slate-700 mb-1">Phone Number</label>
         <input
           type="tel"
           name="phone"
           value={form.phone}
           onChange={handleChange}
           placeholder="e.g. 9876543210"
-          className="input-field"
+          className="input"
         />
       </div>
 
       {/* Notes */}
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">
+        <label className="block text-sm font-medium text-slate-700 mb-1">
           Additional Notes
         </label>
         <textarea
@@ -171,7 +171,7 @@ export default function PatientForm({ existingPatient = null }: { existingPatien
           onChange={handleChange}
           placeholder="Any pre-existing conditions, allergies, etc."
           rows={3}
-          className="input-field resize-none"
+          className="input resize-none"
         />
       </div>
 
@@ -183,13 +183,13 @@ export default function PatientForm({ existingPatient = null }: { existingPatien
       )}
 
       {/* Buttons */}
-      <div className="flex gap-3 pt-2">
-        <button type="submit" className="btn-primary flex-1" disabled={loading}>
+      <div className="flex gap-3 pt-4">
+        <button type="submit" className="btn-md btn-primary flex-1 justify-center" disabled={loading}>
           {loading ? 'Saving...' : isEditing ? 'Save Changes' : 'Add Patient'}
         </button>
         <button
           type="button"
-          className="btn-secondary"
+          className="btn-md btn-secondary"
           onClick={() => router.back()}
           disabled={loading}
         >

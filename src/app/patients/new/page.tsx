@@ -17,7 +17,7 @@ export default function NewPatientPage() {
       </div>
 
       {/* Form card */}
-      <div className="card">
+      <div className="card p-6 sm:p-8">
         <PatientForm />
       </div>
 

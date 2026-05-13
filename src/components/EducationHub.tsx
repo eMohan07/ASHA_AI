@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import { BookOpen, Languages, Loader2, MessageSquare, HeartPulse, Baby, Apple, CheckCircle2, AlertTriangle } from 'lucide-react';
 
-const LANGUAGES = ['Kannada', 'Hindi', 'Marathi', 'Malayalam', 'Assamese', 'Urdu'];
+const LANGUAGES = ['English', 'Kannada', 'Hindi', 'Marathi', 'Malayalam', 'Assamese', 'Urdu'];
 const TOPICS = [
   { id: 'maternal', label: 'Maternal Health', icon: Baby },
   { id: 'nutrition', label: 'Child Nutrition', icon: Apple },
@@ -71,13 +71,13 @@ export default function EducationHub() {
   };
 
   return (
-    <div className="w-full bg-white rounded-xl shadow-lg border border-indigo-100 overflow-hidden flex flex-col min-h-[600px]">
-      <div className="bg-indigo-700 p-4 text-white">
+    <div className="w-full bg-white rounded-xl shadow-lg border border-blue-100 overflow-hidden flex flex-col min-h-[600px]">
+      <div className="bg-[#0f172a] p-4 text-white">
         <h2 className="font-bold text-lg flex items-center gap-2">
           <BookOpen size={20} />
           Localized Health Education Hub
         </h2>
-        <p className="text-indigo-100 text-sm">Multilingual Co-pilot for real-time triage support</p>
+        <p className="text-blue-100 text-sm">Multilingual Co-pilot for real-time triage support</p>
       </div>
 
       <div className="flex flex-col md:flex-row flex-1">
@@ -86,7 +86,7 @@ export default function EducationHub() {
         <div className="w-full md:w-64 bg-slate-50 border-r border-slate-200 p-5 flex flex-col gap-6">
           <div>
             <label className="flex items-center gap-2 font-bold text-slate-700 mb-2 text-sm">
-              <Languages size={16} className="text-indigo-500" /> Target Language
+              <Languages size={16} className="text-blue-500" /> Target Language
             </label>
             <div className="flex flex-col gap-2">
               {LANGUAGES.map(lang => (
@@ -94,7 +94,7 @@ export default function EducationHub() {
                   key={lang}
                   onClick={() => setSelectedLang(lang)}
                   className={`text-left px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
-                    selectedLang === lang ? 'bg-indigo-100 text-indigo-800 border border-indigo-200' : 'text-slate-600 hover:bg-slate-100 border border-transparent'
+                    selectedLang === lang ? 'bg-blue-100 text-blue-800 border border-blue-200' : 'text-slate-600 hover:bg-slate-100 border border-transparent'
                   }`}
                 >
                   {lang}
@@ -105,7 +105,7 @@ export default function EducationHub() {
 
           <div>
              <label className="flex items-center gap-2 font-bold text-slate-700 mb-2 text-sm">
-              <MessageSquare size={16} className="text-indigo-500" /> Education Topic
+              <MessageSquare size={16} className="text-blue-500" /> Education Topic
             </label>
             <div className="flex flex-col gap-2">
               {TOPICS.map(topic => (
@@ -113,10 +113,10 @@ export default function EducationHub() {
                   key={topic.id}
                   onClick={() => setSelectedTopic(topic.label)}
                   className={`text-left px-3 py-2 rounded-lg text-sm font-medium transition-colors flex items-center gap-2 ${
-                    selectedTopic === topic.label ? 'bg-indigo-100 text-indigo-800 border border-indigo-200' : 'text-slate-600 hover:bg-slate-100 border border-transparent'
+                    selectedTopic === topic.label ? 'bg-blue-100 text-blue-800 border border-blue-200' : 'text-slate-600 hover:bg-slate-100 border border-transparent'
                   }`}
                 >
-                  <topic.icon size={16} className={selectedTopic === topic.label ? 'text-indigo-600' : 'text-slate-400'} />
+                  <topic.icon size={16} className={selectedTopic === topic.label ? 'text-blue-600' : 'text-slate-400'} />
                   {topic.label}
                 </button>
               ))}
@@ -126,7 +126,7 @@ export default function EducationHub() {
           <button 
             onClick={handleGenerate}
             disabled={loading}
-            className="mt-auto bg-indigo-600 text-white py-3 rounded-lg font-bold hover:bg-indigo-700 transition-colors flex items-center justify-center gap-2 disabled:opacity-70"
+            className="mt-auto bg-blue-600 text-white py-3 rounded-lg font-bold hover:bg-[#0f172a] transition-colors flex items-center justify-center gap-2 disabled:opacity-70"
           >
             {loading ? <Loader2 size={18} className="animate-spin" /> : <BookOpen size={18} />}
             {loading ? 'Generating...' : 'Generate Guide'}
@@ -143,7 +143,7 @@ export default function EducationHub() {
           )}
 
           {loading && (
-            <div className="h-full flex flex-col items-center justify-center text-indigo-400 absolute inset-0">
+            <div className="h-full flex flex-col items-center justify-center text-blue-400 absolute inset-0">
                <Loader2 size={48} className="animate-spin mb-4" />
                <p className="font-medium animate-pulse">Translating and structuring content...</p>
             </div>
@@ -154,7 +154,7 @@ export default function EducationHub() {
               <div className="mb-8 border-b border-slate-100 pb-4">
                  <h3 className="text-2xl font-black text-slate-800 mb-1">{content.title}</h3>
                  <p className="text-sm text-slate-500 font-medium">{content.titleEnglish}</p>
-                 <div className="inline-block mt-3 px-3 py-1 bg-indigo-50 text-indigo-700 rounded-full text-xs font-bold border border-indigo-100">
+                 <div className="inline-block mt-3 px-3 py-1 bg-blue-50 text-blue-700 rounded-full text-xs font-bold border border-blue-100">
                    Translated to {selectedLang}
                  </div>
               </div>
@@ -177,15 +177,15 @@ export default function EducationHub() {
                 {content.questionsToAsk && content.questionsToAsk.length > 0 && (
                   <section>
                     <h4 className="font-bold text-lg text-slate-800 mb-4 flex items-center gap-2">
-                      <MessageSquare size={20} className="text-indigo-500" /> Triage Questions to Ask
+                      <MessageSquare size={20} className="text-blue-500" /> Triage Questions to Ask
                     </h4>
                     <p className="text-sm text-slate-500 mb-4">Ask the patient these questions and record their answers to receive specific medical actions.</p>
                     
                     <div className="space-y-4">
                       {content.questionsToAsk.map((item: any, i: number) => (
-                        <div key={i} className="flex flex-col gap-3 bg-indigo-50/50 p-4 rounded-xl border border-indigo-100">
+                        <div key={i} className="flex flex-col gap-3 bg-blue-50/50 p-4 rounded-xl border border-blue-100">
                           <div className="flex gap-3 items-start">
-                            <div className="w-6 h-6 rounded-full bg-indigo-200 text-indigo-700 flex items-center justify-center text-xs font-bold shrink-0 mt-0.5">Q</div>
+                            <div className="w-6 h-6 rounded-full bg-blue-200 text-blue-700 flex items-center justify-center text-xs font-bold shrink-0 mt-0.5">Q</div>
                             <div>
                                <p className="font-bold text-slate-700 mb-1">{item.qLocal}</p>
                                <p className="text-xs text-slate-500">{item.qEnglish}</p>
@@ -199,7 +199,7 @@ export default function EducationHub() {
                                 key={opt}
                                 onClick={() => setAnswers({...answers, [i]: opt})}
                                 className={`px-4 py-1.5 rounded-full text-sm font-medium border transition-colors ${
-                                  answers[i] === opt ? 'bg-indigo-600 text-white border-indigo-600' : 'bg-white text-slate-600 border-slate-200 hover:bg-slate-50'
+                                  answers[i] === opt ? 'bg-blue-600 text-white border-blue-600' : 'bg-white text-slate-600 border-slate-200 hover:bg-slate-50'
                                 }`}
                               >
                                 {opt}
