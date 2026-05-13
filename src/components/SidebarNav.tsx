@@ -1,6 +1,8 @@
 'use client'
+import { useEffect, useState } from 'react'
 import Link from 'next/link'
-import { usePathname } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
+import { supabase } from '@/lib/supabase'
 import {
   LayoutDashboard, Users,
   Activity, BookOpen,
@@ -17,12 +19,35 @@ const nav = [
 
 export default function SidebarNav() {
   const pathname = usePathname()
+  const router = useRouter()
+  const [user, setUser] = useState<any>(null)
+
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data }) => {
+      setUser(data.session?.user ?? null)
+    })
+
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      setUser(session?.user ?? null)
+    })
+
+    return () => subscription.unsubscribe()
+  }, [])
+
+  const handleLogout = async () => {
+    await supabase.auth.signOut()
+    router.push('/login')
+  }
+
+  const rawName: string = (user?.user_metadata?.full_name as string) || user?.email || 'User'
+  const displayName = rawName.includes('@') ? rawName.split('@')[0] : rawName
+  const initials = rawName.split(' ').map((n: string) => n[0]).join('').toUpperCase().slice(0, 2)
 
   return (
     <aside className="w-64 shrink-0 bg-[#f8f9fa] border-r border-slate-200 flex flex-col h-screen sticky top-0 overflow-hidden">
       {/* Logo */}
       <div className="px-8 pt-8 pb-6">
-        <h1 className="text-xl font-bold text-slate-900 leading-tight tracking-tight">CareLink Pro</h1>
+        <h1 className="text-xl font-bold text-slate-900 leading-tight tracking-tight">ASHA AI</h1>
         <p className="text-[11px] font-semibold text-slate-500 uppercase tracking-wide mt-1">Field Unit 04</p>
       </div>
 
@@ -57,18 +82,18 @@ export default function SidebarNav() {
         {/* Profile */}
         <div className="flex items-center gap-3 pt-4 border-t border-slate-200/60 pb-2">
           <div className="w-10 h-10 rounded-full bg-[#e5edff] flex items-center justify-center font-bold text-[#0f172a]">
-            AT
+            {initials}
           </div>
           <div className="flex-1 min-w-0">
-            <p className="text-sm font-bold text-slate-900 truncate">Dr. Aris Thorne</p>
-            <p className="text-[10px] font-semibold text-slate-500 uppercase tracking-wide truncate">Field Surgeon</p>
+            <p className="text-sm font-bold text-slate-900 truncate capitalize">{displayName}</p>
+            <p className="text-[10px] font-semibold text-slate-500 uppercase tracking-wide truncate">Clinical Lead</p>
           </div>
         </div>
 
         <div className="space-y-1">
-          <button className="w-full flex items-center gap-3 px-2 py-2.5 rounded-lg text-xs font-semibold text-slate-600 hover:text-slate-900 transition-colors">
+          <button onClick={handleLogout} className="w-full flex items-center gap-3 px-2 py-2.5 rounded-lg text-xs font-semibold text-slate-600 hover:text-red-600 hover:bg-red-50 transition-colors">
             <LogOut size={16} className="text-slate-400" />
-            Logout
+            Sign Out
           </button>
         </div>
       </div>

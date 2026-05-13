@@ -1,6 +1,7 @@
 'use client'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Link from 'next/link'
+import { supabase } from '@/lib/supabase'
 import {
   Users, FileText, Send, Activity,
   HeartPulse, Wind, Brain, MessageSquare, Lightbulb,
@@ -46,6 +47,20 @@ const recentActivity = [
 export default function HomePage() {
   const [timeframe, setTimeframe] = useState<'weekly' | 'monthly'>('monthly')
   const [expandedPatient, setExpandedPatient] = useState<number | null>(null)
+  const [user, setUser] = useState<any>(null)
+
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data }) => {
+      setUser(data.session?.user ?? null)
+    })
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      setUser(session?.user ?? null)
+    })
+    return () => subscription.unsubscribe()
+  }, [])
+
+  const rawName: string = (user?.user_metadata?.full_name as string) || user?.email || ''
+  const displayName = rawName.includes('@') ? rawName.split('@')[0] : rawName || 'Doctor'
 
   const togglePatient = (index: number) => {
     setExpandedPatient(expandedPatient === index ? null : index)
@@ -68,7 +83,7 @@ export default function HomePage() {
       <div className="mb-8">
         <h1 className="text-3xl font-bold text-[#0f172a] tracking-tight">Clinical Overview</h1>
         <p className="text-slate-600 text-base mt-1">
-          Welcome back, Dr. Aris. You have 3 urgent assessments today.
+          Welcome back, <span className="font-semibold text-slate-800 capitalize">{displayName}</span>. You have 3 urgent assessments today.
         </p>
       </div>
 
@@ -161,19 +176,25 @@ export default function HomePage() {
           {/* Quick Diagnostics */}
           <div className="bg-white rounded-xl shadow-sm border border-slate-100 p-6">
             <h2 className="text-lg font-bold text-slate-900 mb-4">Quick Diagnostics</h2>
-            <div className="grid grid-cols-2 gap-3">
+            <div className="space-y-2">
               {[
-                { label: 'Vitals Scan', icon: HeartPulse, href: '/health-monitor' },
-                { label: 'Breath AI', icon: Wind, href: '/respiratory-assessment' },
-                { label: 'Symptom AI', icon: MessageSquare, href: '/symptom-checker' },
+                { label: 'Vitals Scan', icon: HeartPulse, href: '/health-monitor', desc: 'Monitor vital signs' },
+                { label: 'Breath AI', icon: Wind, href: '/respiratory-assessment', desc: 'Respiratory analysis' },
+                { label: 'Symptom AI', icon: MessageSquare, href: '/symptom-checker', desc: 'AI symptom checker' },
               ].map((tool, i) => (
-                <Link key={i} href={tool.href} className="bg-slate-50 hover:bg-slate-100 rounded-xl p-4 flex flex-col items-center justify-center text-center transition-colors border border-slate-100">
-                  <tool.icon size={20} className="text-slate-700 mb-2" />
-                  <span className="text-xs font-bold text-slate-800">{tool.label}</span>
+                <Link key={i} href={tool.href} className="flex items-center gap-4 p-3 bg-slate-50 hover:bg-slate-100 rounded-xl transition-colors border border-slate-100 group">
+                  <div className="w-9 h-9 bg-white rounded-lg flex items-center justify-center border border-slate-200 shadow-sm group-hover:border-slate-300 shrink-0">
+                    <tool.icon size={18} className="text-slate-600" />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <p className="text-sm font-bold text-slate-800">{tool.label}</p>
+                    <p className="text-[11px] text-slate-400 font-medium">{tool.desc}</p>
+                  </div>
+                  <ArrowRight size={14} className="text-slate-300 group-hover:text-slate-500 transition-colors" />
                 </Link>
               ))}
             </div>
-            <Link href="/digital-twin" className="mt-3 flex items-center justify-center gap-2 w-full bg-[#0f172a] hover:bg-slate-800 text-white rounded-xl p-3 transition-colors">
+            <Link href="/digital-twin" className="mt-4 flex items-center justify-center gap-2 w-full bg-[#0f172a] hover:bg-slate-800 text-white rounded-xl p-3 transition-colors">
               <Brain size={18} className="text-blue-300" />
               <span className="text-xs font-bold">Digital Twin</span>
             </Link>

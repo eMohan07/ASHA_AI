@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react'
 import { supabase } from '@/lib/supabase'
 import { useRouter } from 'next/navigation'
 import type { User } from '@supabase/supabase-js'
+import { User as UserIcon, Mail, Shield, Calendar, Clock, LogOut, Trash2, CheckCircle2, ChevronRight, Key, Sparkles } from 'lucide-react'
 
 export default function ProfilePage() {
   const router = useRouter()
@@ -15,7 +16,6 @@ export default function ProfilePage() {
   const [nameMsg, setNameMsg] = useState('')
 
   // Change password
-  const [currentPassword, setCurrentPassword] = useState('')
   const [newPassword, setNewPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
   const [savingPass, setSavingPass] = useState(false)
@@ -60,7 +60,7 @@ export default function ProfilePage() {
     setSavingPass(false)
     if (error) { setPassError(error.message); return }
     setPassMsg('✅ Password changed successfully!')
-    setCurrentPassword(''); setNewPassword(''); setConfirmPassword('')
+    setNewPassword(''); setConfirmPassword('')
     setTimeout(() => setPassMsg(''), 3000)
   }
 
@@ -94,8 +94,12 @@ export default function ProfilePage() {
 
   if (loading) {
     return (
-      <div className="max-w-2xl mx-auto py-12 space-y-4">
-        {[1,2,3].map(i => <div key={i} className="h-32 bg-gray-100 rounded-2xl animate-pulse" />)}
+      <div className="max-w-3xl mx-auto space-y-6">
+        <div className="h-48 bg-slate-100 rounded-3xl animate-pulse" />
+        <div className="grid grid-cols-2 gap-6">
+          <div className="h-64 bg-slate-100 rounded-3xl animate-pulse" />
+          <div className="h-64 bg-slate-100 rounded-3xl animate-pulse" />
+        </div>
       </div>
     )
   }
@@ -107,214 +111,200 @@ export default function ProfilePage() {
   const joinedDate = new Date(user.created_at).toLocaleDateString('en-IN', { year: 'numeric', month: 'long', day: 'numeric' })
 
   return (
-    <>
-    <div className="max-w-2xl mx-auto py-8 space-y-6">
-
-      {/* Page header */}
-      <div>
-        <h1 className="text-2xl font-bold text-gray-900">My Profile</h1>
-        <p className="text-sm text-gray-500 mt-1">Manage your ASHA AI account settings</p>
-      </div>
-
-      {/* ── Avatar card ── */}
-      <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 flex items-center gap-5">
-        <div className="w-20 h-20 bg-green-700 rounded-full flex items-center justify-center text-white text-2xl font-bold shrink-0">
-          {initials}
-        </div>
-        <div className="flex-1 min-w-0">
-          <h2 className="text-xl font-bold text-gray-900 truncate">{displayName}</h2>
-          <p className="text-sm text-gray-500 truncate">{user.email}</p>
-          <div className="flex items-center gap-2 mt-2">
-            <span className="inline-flex items-center gap-1 px-2 py-0.5 bg-green-100 text-green-700 text-xs font-medium rounded-full">
-              <span className="w-1.5 h-1.5 bg-green-500 rounded-full" />
-              Active
-            </span>
-            <span className="text-xs text-gray-400">Member since {joinedDate}</span>
-          </div>
+    <div className="max-w-4xl mx-auto space-y-8 animate-fade-in pb-12">
+      
+      {/* Header */}
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div>
+          <h1 className="text-3xl font-bold text-slate-900 tracking-tight">Clinical Profile</h1>
+          <p className="text-slate-500 font-medium mt-1">Manage your professional credentials and security</p>
         </div>
         <button onClick={handleSignOut}
-          className="shrink-0 flex items-center gap-1.5 px-3 py-1.5 text-sm text-red-600 border border-red-200 rounded-lg hover:bg-red-50 transition-colors">
-          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
-          </svg>
-          Sign out
+          className="inline-flex items-center gap-2 px-4 py-2 text-sm font-bold text-red-600 bg-red-50 hover:bg-red-100 rounded-xl transition-all w-fit">
+          <LogOut size={16} />
+          Sign Out
         </button>
       </div>
 
-      {/* ── Account info ── */}
-      <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
-        <div className="px-6 py-4 border-b border-gray-100">
-          <h3 className="font-semibold text-gray-900">Account Information</h3>
-        </div>
-        <div className="divide-y divide-gray-100">
-          {[
-            { label: 'Email', value: user.email, icon: 'M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z' },
-            { label: 'User ID', value: user.id.slice(0, 16) + '…', icon: 'M10 6H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V8a2 2 0 00-2-2h-5m-4 0V5a2 2 0 114 0v1m-4 0a2 2 0 104 0m-5 8a2 2 0 100-4 2 2 0 000 4zm0 0c1.306 0 2.417.835 2.83 2M9 14a3.001 3.001 0 00-2.83 2M15 11h3m-3 4h2' },
-            { label: 'Joined', value: joinedDate, icon: 'M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z' },
-            { label: 'Last Sign In', value: user.last_sign_in_at ? new Date(user.last_sign_in_at).toLocaleString('en-IN') : 'N/A', icon: 'M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z' },
-          ].map(item => (
-            <div key={item.label} className="flex items-center gap-4 px-6 py-4">
-              <div className="w-8 h-8 bg-gray-100 rounded-lg flex items-center justify-center shrink-0">
-                <svg className="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={item.icon} />
-                </svg>
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        
+        {/* Left Column — Stats & Info */}
+        <div className="lg:col-span-1 space-y-6">
+          
+          {/* Avatar Card */}
+          <div className="bg-[#0f172a] rounded-[2.5rem] p-8 text-center shadow-2xl shadow-blue-900/20 relative overflow-hidden group">
+            <div className="absolute top-0 right-0 p-4 opacity-20 group-hover:opacity-40 transition-opacity">
+              <Sparkles className="text-blue-400" size={48} />
+            </div>
+            <div className="w-24 h-24 bg-blue-100 rounded-[2rem] flex items-center justify-center text-blue-700 text-3xl font-black mx-auto mb-6 border-4 border-blue-900/50 shadow-inner">
+              {initials}
+            </div>
+            <h2 className="text-xl font-bold text-white truncate px-2">{displayName}</h2>
+            <p className="text-blue-300/60 text-xs font-bold uppercase tracking-widest mt-2">{user.email}</p>
+            
+            <div className="mt-8 pt-6 border-t border-white/10 flex flex-col gap-4">
+              <div className="flex items-center justify-between text-xs font-bold uppercase tracking-wider">
+                <span className="text-slate-500">Status</span>
+                <span className="text-emerald-400 flex items-center gap-1.5">
+                  <div className="w-1.5 h-1.5 bg-emerald-400 rounded-full animate-pulse" />
+                  Authorized
+                </span>
               </div>
-              <div className="flex-1 min-w-0">
-                <p className="text-xs text-gray-400 font-medium">{item.label}</p>
-                <p className="text-sm text-gray-800 font-medium truncate">{item.value}</p>
+              <div className="flex items-center justify-between text-xs font-bold uppercase tracking-wider">
+                <span className="text-slate-500">Joined</span>
+                <span className="text-slate-300">{joinedDate}</span>
               </div>
             </div>
-          ))}
-        </div>
-      </div>
-
-      {/* ── Edit Name ── */}
-      <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
-        <div className="px-6 py-4 border-b border-gray-100">
-          <h3 className="font-semibold text-gray-900">Edit Profile</h3>
-          <p className="text-xs text-gray-400 mt-0.5">Update your display name</p>
-        </div>
-        <form onSubmit={handleSaveName} className="px-6 py-5 space-y-4">
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1.5" htmlFor="profile-name">Full name</label>
-            <input id="profile-name" type="text" value={name} onChange={e => setName(e.target.value)} placeholder="Your full name"
-              className="w-full px-4 py-2.5 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition" />
           </div>
-          {nameMsg && (
-            <p className={`text-sm font-medium ${nameMsg.startsWith('✅') ? 'text-green-700' : 'text-red-600'}`}>{nameMsg}</p>
-          )}
-          <button type="submit" disabled={savingName}
-            className="px-5 py-2 bg-green-700 hover:bg-green-800 disabled:opacity-60 text-white font-semibold text-sm rounded-lg transition-colors flex items-center gap-2">
-            {savingName ? <><svg className="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"/><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"/></svg>Saving…</> : 'Save Changes'}
-          </button>
-        </form>
+
+          {/* Metadata List */}
+          <div className="bg-white rounded-[2rem] border border-slate-100 shadow-sm p-6 space-y-4">
+            <h3 className="text-xs font-black text-slate-400 uppercase tracking-[0.2em] px-2 mb-2">System Metadata</h3>
+            {[
+              { label: 'Role', value: 'Clinical Specialist', icon: Shield },
+              { label: 'Network ID', value: user.id.slice(0, 12).toUpperCase(), icon: Key },
+              { label: 'Last Login', value: user.last_sign_in_at ? new Date(user.last_sign_in_at).toLocaleDateString() : 'N/A', icon: Clock },
+            ].map(item => (
+              <div key={item.label} className="flex items-center gap-4 p-3 rounded-2xl hover:bg-slate-50 transition-colors group">
+                <div className="w-10 h-10 bg-slate-100 rounded-xl flex items-center justify-center text-slate-400 group-hover:bg-white group-hover:text-blue-600 transition-colors shadow-sm">
+                  <item.icon size={18} />
+                </div>
+                <div>
+                  <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">{item.label}</p>
+                  <p className="text-sm font-bold text-slate-800">{item.value}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Right Column — Settings Forms */}
+        <div className="lg:col-span-2 space-y-8">
+          
+          {/* Edit Profile */}
+          <div className="bg-white rounded-[2.5rem] border border-slate-100 shadow-sm overflow-hidden">
+            <div className="px-8 py-6 border-b border-slate-50 flex items-center justify-between bg-slate-50/30">
+              <div>
+                <h3 className="font-bold text-slate-900">Personal Identification</h3>
+                <p className="text-xs text-slate-500 font-medium">How your name appears in clinical reports</p>
+              </div>
+              <UserIcon className="text-slate-200" size={24} />
+            </div>
+            <form onSubmit={handleSaveName} className="p-8 space-y-6">
+              <div className="space-y-2">
+                <label className="text-xs font-black text-slate-400 uppercase tracking-widest ml-1">Full Display Name</label>
+                <input type="text" value={name} onChange={e => setName(e.target.value)} placeholder="Enter full name"
+                  className="w-full px-5 py-3.5 bg-slate-50 border border-slate-200 rounded-2xl focus:outline-none focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 transition-all font-bold text-slate-800" />
+              </div>
+              
+              <div className="flex items-center justify-between">
+                <div className="h-5">
+                  {nameMsg && (
+                    <p className={`text-sm font-bold animate-fade-in ${nameMsg.startsWith('✅') ? 'text-emerald-600' : 'text-red-600'}`}>
+                      {nameMsg}
+                    </p>
+                  )}
+                </div>
+                <button type="submit" disabled={savingName}
+                  className="px-8 py-3 bg-[#0f172a] hover:bg-slate-800 disabled:opacity-60 text-white font-bold text-sm rounded-xl transition-all shadow-lg shadow-blue-900/10 flex items-center gap-2">
+                  {savingName ? <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" /> : 'Save Profile'}
+                </button>
+              </div>
+            </form>
+          </div>
+
+          {/* Security */}
+          <div className="bg-white rounded-[2.5rem] border border-slate-100 shadow-sm overflow-hidden">
+            <div className="px-8 py-6 border-b border-slate-50 flex items-center justify-between bg-slate-50/30">
+              <div>
+                <h3 className="font-bold text-slate-900">Security Credentials</h3>
+                <p className="text-xs text-slate-500 font-medium">Update your workspace password</p>
+              </div>
+              <Shield className="text-slate-200" size={24} />
+            </div>
+            <form onSubmit={handleChangePassword} className="p-8 space-y-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="space-y-2">
+                  <label className="text-xs font-black text-slate-400 uppercase tracking-widest ml-1">New Password</label>
+                  <div className="relative">
+                    <input type={showNewPass ? 'text' : 'password'} value={newPassword} onChange={e => setNewPassword(e.target.value)} placeholder="Min. 8 characters" required
+                      className="w-full px-5 py-3.5 bg-slate-50 border border-slate-200 rounded-2xl focus:outline-none focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 transition-all font-bold text-slate-800 pr-12" />
+                    <button type="button" onClick={() => setShowNewPass(!showNewPass)} className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-300 hover:text-slate-500">
+                      <Clock size={18} />
+                    </button>
+                  </div>
+                </div>
+                <div className="space-y-2">
+                  <label className="text-xs font-black text-slate-400 uppercase tracking-widest ml-1">Confirm Update</label>
+                  <input type="password" value={confirmPassword} onChange={e => setConfirmPassword(e.target.value)} placeholder="Repeat password" required
+                    className={`w-full px-5 py-3.5 border rounded-2xl focus:outline-none focus:ring-4 transition-all font-bold text-slate-800 ${confirmPassword && confirmPassword !== newPassword ? 'border-red-400 bg-red-50 focus:ring-red-500/10' : 'bg-slate-50 border-slate-200 focus:ring-blue-500/10 focus:border-blue-500'}`} />
+                </div>
+              </div>
+
+              <div className="flex items-center justify-between">
+                <div className="h-5">
+                  {passError && <p className="text-sm text-red-600 font-bold">{passError}</p>}
+                  {passMsg && <p className="text-sm text-emerald-600 font-bold">{passMsg}</p>}
+                </div>
+                <button type="submit" disabled={savingPass}
+                  className="px-8 py-3 bg-[#0f172a] hover:bg-slate-800 disabled:opacity-60 text-white font-bold text-sm rounded-xl transition-all shadow-lg shadow-blue-900/10 flex items-center gap-2">
+                  {savingPass ? <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" /> : 'Update Password'}
+                </button>
+              </div>
+            </form>
+          </div>
+
+          {/* Danger Zone */}
+          <div className="bg-red-50/50 rounded-[2.5rem] border border-red-100 p-8 flex flex-col md:flex-row items-center justify-between gap-6">
+            <div className="text-center md:text-left">
+              <h3 className="font-bold text-red-700">Irreversible Actions</h3>
+              <p className="text-sm text-red-600/70 font-medium">Permanent removal of clinical history and account access</p>
+            </div>
+            <button onClick={() => { setShowDeleteModal(true); setDeleteConfirm(''); setDeleteError('') }}
+              className="px-6 py-3 bg-red-600 hover:bg-red-700 text-white font-bold text-sm rounded-xl transition-all shadow-lg shadow-red-900/20 flex items-center gap-2 active:scale-95">
+              <Trash2 size={16} />
+              Terminate Account
+            </button>
+          </div>
+        </div>
       </div>
 
-      {/* ── Change Password ── */}
-      <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
-        <div className="px-6 py-4 border-b border-gray-100">
-          <h3 className="font-semibold text-gray-900">Change Password</h3>
-          <p className="text-xs text-gray-400 mt-0.5">Choose a strong password</p>
-        </div>
-        <form onSubmit={handleChangePassword} className="px-6 py-5 space-y-4">
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1.5" htmlFor="new-pass">New password</label>
-            <div className="relative">
-              <input id="new-pass" type={showNewPass ? 'text' : 'password'} value={newPassword} onChange={e => setNewPassword(e.target.value)} placeholder="Min. 8 characters" required
-                className="w-full px-4 py-2.5 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition pr-10" />
-              <button type="button" onClick={() => setShowNewPass(!showNewPass)} tabIndex={-1}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600">
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0zM2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                </svg>
-              </button>
+      {/* Delete Modal */}
+      {showDeleteModal && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-slate-900/80 backdrop-blur-sm px-4 animate-fade-in">
+          <div className="bg-white rounded-[3rem] shadow-2xl w-full max-w-md overflow-hidden border border-slate-100 animate-scale-up">
+            <div className="h-3 bg-red-600" />
+            <div className="p-10">
+              <div className="w-16 h-16 bg-red-100 rounded-3xl flex items-center justify-center mx-auto mb-6">
+                <Trash2 size={32} className="text-red-600" />
+              </div>
+              <h2 className="text-2xl font-black text-slate-900 text-center tracking-tight">Confirm Termination</h2>
+              <p className="text-sm text-slate-500 text-center mt-3 mb-8 font-medium leading-relaxed">
+                This action will <span className="text-red-600 font-bold underline">permanently purge</span> all clinical records, history, and credentials associated with this workspace.
+              </p>
+
+              <div className="bg-slate-50 rounded-2xl p-5 mb-6 border border-slate-100">
+                <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-3 text-center">Type <span className="text-red-600">DELETE</span> to authorize</p>
+                <input type="text" value={deleteConfirm} onChange={e => setDeleteConfirm(e.target.value)} placeholder="Type DELETE"
+                  className="w-full px-4 py-3 text-center text-lg font-black bg-white border border-slate-200 rounded-xl focus:outline-none focus:ring-4 focus:ring-red-500/10 focus:border-red-500 transition-all uppercase tracking-[0.2em]" />
+              </div>
+
+              {deleteError && <p className="text-sm text-red-600 font-bold mb-6 text-center">{deleteError}</p>}
+
+              <div className="flex flex-col gap-3">
+                <button onClick={handleDeleteAccount} disabled={deleteConfirm !== 'DELETE' || deleting}
+                  className="w-full py-4 bg-red-600 hover:bg-red-700 disabled:opacity-30 text-white font-black text-sm rounded-2xl transition-all shadow-xl shadow-red-900/20 uppercase tracking-widest">
+                  {deleting ? 'Purging Systems...' : 'Authorize Termination'}
+                </button>
+                <button onClick={() => setShowDeleteModal(false)}
+                  className="w-full py-3 text-sm font-bold text-slate-400 hover:text-slate-600 transition-colors">
+                  Cancel Action
+                </button>
+              </div>
             </div>
           </div>
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1.5" htmlFor="confirm-pass">Confirm new password</label>
-            <input id="confirm-pass" type="password" value={confirmPassword} onChange={e => setConfirmPassword(e.target.value)} placeholder="Re-enter new password" required
-              className={`w-full px-4 py-2.5 text-sm border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 transition ${confirmPassword && confirmPassword !== newPassword ? 'border-red-400 bg-red-50' : 'border-gray-300'}`} />
-            {confirmPassword && confirmPassword !== newPassword && <p className="text-xs text-red-500 mt-1">Passwords don&apos;t match</p>}
-          </div>
-          {passError && <p className="text-sm text-red-600 font-medium">{passError}</p>}
-          {passMsg && <p className="text-sm text-green-700 font-medium">{passMsg}</p>}
-          <button type="submit" disabled={savingPass}
-            className="px-5 py-2 bg-green-700 hover:bg-green-800 disabled:opacity-60 text-white font-semibold text-sm rounded-lg transition-colors flex items-center gap-2">
-            {savingPass ? <><svg className="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"/><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"/></svg>Updating…</> : 'Update Password'}
-          </button>
-        </form>
-      </div>
-
-      {/* ── Danger Zone ── */}
-      <div className="bg-white rounded-2xl border border-red-100 shadow-sm overflow-hidden">
-        <div className="px-6 py-4 border-b border-red-100">
-          <h3 className="font-semibold text-red-700">Danger Zone</h3>
-          <p className="text-xs text-gray-400 mt-0.5">These actions are irreversible. Please be careful.</p>
         </div>
-
-        {/* Sign out row */}
-        <div className="px-6 py-4 flex items-center justify-between border-b border-red-50">
-          <div>
-            <p className="text-sm font-medium text-gray-800">Sign out</p>
-            <p className="text-xs text-gray-400 mt-0.5">End your current session</p>
-          </div>
-          <button onClick={handleSignOut}
-            className="px-4 py-2 text-sm font-semibold text-red-600 border border-red-300 rounded-lg hover:bg-red-50 transition-colors">
-            Sign Out
-          </button>
-        </div>
-
-        {/* Delete account row */}
-        <div className="px-6 py-4 flex items-center justify-between">
-          <div>
-            <p className="text-sm font-medium text-red-700">Delete account permanently</p>
-            <p className="text-xs text-gray-400 mt-0.5">Remove all your data. This cannot be undone.</p>
-          </div>
-          <button onClick={() => { setShowDeleteModal(true); setDeleteConfirm(''); setDeleteError('') }}
-            className="px-4 py-2 text-sm font-bold text-white bg-red-600 hover:bg-red-700 rounded-lg transition-colors">
-            Delete Account
-          </button>
-        </div>
-      </div>
+      )}
     </div>
-
-    {/* ── Delete Confirmation Modal ── */}
-    {showDeleteModal && (
-      <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 px-4">
-        <div className="bg-white rounded-2xl shadow-2xl w-full max-w-md overflow-hidden">
-          <div className="h-1.5 bg-red-500" />
-          <div className="p-6">
-            {/* Icon */}
-            <div className="w-12 h-12 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
-              <svg className="w-6 h-6 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
-              </svg>
-            </div>
-
-            <h2 className="text-xl font-bold text-gray-900 text-center">Delete Account?</h2>
-            <p className="text-sm text-gray-500 text-center mt-2 mb-6">
-              This will <strong>permanently delete</strong> your account and all associated data.
-              This action <span className="text-red-600 font-semibold">cannot be undone</span>.
-            </p>
-
-            <div className="bg-red-50 border border-red-200 rounded-lg px-4 py-3 mb-5">
-              <p className="text-sm text-red-700 font-medium mb-2">Type <strong>DELETE</strong> to confirm:</p>
-              <input
-                id="delete-confirm-input"
-                type="text"
-                value={deleteConfirm}
-                onChange={e => setDeleteConfirm(e.target.value)}
-                placeholder="Type DELETE here"
-                className="w-full px-3 py-2 text-sm border border-red-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 bg-white font-mono"
-              />
-            </div>
-
-            {deleteError && (
-              <p className="text-sm text-red-600 font-medium mb-4">{deleteError}</p>
-            )}
-
-            <div className="flex gap-3">
-              <button
-                onClick={() => setShowDeleteModal(false)}
-                className="flex-1 py-2.5 text-sm font-semibold text-gray-700 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
-              >
-                Cancel
-              </button>
-              <button
-                id="confirm-delete-btn"
-                onClick={handleDeleteAccount}
-                disabled={deleteConfirm !== 'DELETE' || deleting}
-                className="flex-1 py-2.5 text-sm font-bold text-white bg-red-600 hover:bg-red-700 disabled:opacity-50 disabled:cursor-not-allowed rounded-lg transition-colors flex items-center justify-center gap-2"
-              >
-                {deleting ? (
-                  <><svg className="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"/><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"/></svg>Deleting…</>
-                ) : 'Yes, Delete Forever'}
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-    )}
-    </>
   )
 }
