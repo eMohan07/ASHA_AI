@@ -1,5 +1,5 @@
 'use client'
-import { useState, useRef, useEffect } from 'react'
+import { useState, useRef, useEffect, Suspense } from 'react'
 import { useSearchParams } from 'next/navigation'
 import ChatMessage from '../../components/ChatMessage'
 import AlertBanner from '../../components/AlertBanner'
@@ -12,7 +12,7 @@ const WELCOME_MESSAGE = {
   timestamp: new Date().toISOString(),
 }
 
-export default function SymptomCheckerPage() {
+function SymptomCheckerContent() {
   const searchParams = useSearchParams()
   const patientId   = searchParams.get('patientId')
   const patientName = searchParams.get('patientName')
@@ -170,5 +170,13 @@ export default function SymptomCheckerPage() {
       </div>
 
     </div>
+  )
+}
+
+export default function SymptomCheckerPage() {
+  return (
+    <Suspense fallback={<div className="flex justify-center p-8">Loading symptom checker...</div>}>
+      <SymptomCheckerContent />
+    </Suspense>
   )
 }
